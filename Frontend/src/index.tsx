@@ -19,11 +19,11 @@ declare module '@mui/material/styles' {
 const theme = createTheme({
   palette: {
     customPalette: {
-      mainColor: { main: '#FF7237' },
-      subColor1: { main: '#FBF6F4' },
-      subColor2: { main: '#FF230F' },
-      subColor3: { main: '#654039' },
-      subColor4: { main: '#817F82' },
+      mainYellow: { main: '#FFD812' },
+      mainBlue: { main: '#2C4493' },
+      mainOrange: { main: '#EE7005' },
+      // subColor3: { main: '#654039' },
+      // subColor4: { main: '#817F82' },
     },
   } as PaletteOptions,
 });
