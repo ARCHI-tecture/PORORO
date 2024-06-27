@@ -1,10 +1,14 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import CategoryMain from './pages/category/CategoryMain';
 
 function App() {
   return (
-    <div className="App">
-      <h1>안냥하세여</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/category" element={<CategoryMain />} />
+      </Routes>
+    </Router>
   );
 }
 
