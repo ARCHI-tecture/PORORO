@@ -2,12 +2,23 @@ import { Grid, IconButton, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AddIcon from '@mui/icons-material/Add';
+import AddCategory from './AddCategory';
+import { CategoryHeaderPropsType } from '../type';
 
-interface CategoryHeaderType {
+export interface CategoryHeaderType extends CategoryHeaderPropsType {
   handleOpen: () => void;
 }
 
-const CategoryHeader: React.FC<CategoryHeaderType> = ({ handleOpen }) => {
+const CategoryHeader: React.FC<CategoryHeaderType> = ({
+  color,
+  categoryArr,
+  handleClose,
+  handleOpen,
+  open,
+  setColor,
+  setCategoryArr,
+  setOpen,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -36,6 +47,16 @@ const CategoryHeader: React.FC<CategoryHeaderType> = ({ handleOpen }) => {
           <AddIcon sx={{ fontSize: 32 }} />
         </IconButton>
       </Grid>
+
+      <AddCategory
+        open={open}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        categoryArr={categoryArr}
+        setCategoryArr={setCategoryArr}
+        color={color}
+        setColor={setColor}
+      />
     </>
   );
 };
