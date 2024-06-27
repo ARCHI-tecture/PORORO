@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   IconButton,
+  Menu,
   Modal,
   TextField,
   Typography,
@@ -14,31 +15,23 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CircleIcon from '@mui/icons-material/Circle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useRef, useState } from 'react';
-import { Category } from './CategoryMain';
+import { CategoryHeaderPropsType } from '../type';
+import { CirclePicker, ColorResult } from 'react-color';
 
-interface AddCategoryPropsType {
-  open: boolean;
-  handleClose: () => void;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  categoryArr: Category[];
-  setCategoryArr: React.Dispatch<React.SetStateAction<Category[]>>;
-  color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const AddCategory: React.FC<AddCategoryPropsType> = ({
-  open,
-  setOpen,
-  handleClose,
-  categoryArr,
-  setCategoryArr,
+const AddCategory: React.FC<CategoryHeaderPropsType> = ({
   color,
+  categoryArr,
+  handleClose,
+  open,
   setColor,
+  setCategoryArr,
+  setOpen,
 }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const [category, setCategory] = useState('');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const modalStyle = {
     position: 'absolute',
@@ -52,6 +45,20 @@ const AddCategory: React.FC<AddCategoryPropsType> = ({
   };
 
   const sameCategoryAlert = useRef<HTMLDivElement>(null);
+  const menuOpen = Boolean(anchorEl);
+
+  const handleChangeComplete = (color: ColorResult) => {
+    setColor(color.hex);
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const addCategory = () => {
     if (
@@ -149,26 +156,77 @@ const AddCategory: React.FC<AddCategoryPropsType> = ({
             <Grid
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                flexDirection: 'column',
                 alignItems: 'center',
                 cursor: 'pointer',
                 mt: 1,
               }}
             >
-              <Typography sx={{ fontSize: 20 }}>색상</Typography>
+              <Grid
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  mt: 1,
+                }}
+              >
+                <Typography sx={{ fontSize: 20 }}>색상</Typography>
+                <Grid>
+                  <IconButton
+                    aria-label="color"
+                    sx={{ padding: 0, color: color }}
+                    id="basic-button"
+                    aria-controls={menuOpen ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={menuOpen ? 'true' : undefined}
+                    onClick={handleClick}
+                  >
+                    <CircleIcon />
+                  </IconButton>
+                  <IconButton
+                    color="inherit"
+                    sx={{ padding: 0, color: 'lightgray' }}
+                  >
+                    <ArrowDropDownIcon sx={{ fontSize: 28 }} />
+                  </IconButton>
+                </Grid>
+              </Grid>
               <Grid>
-                <IconButton
-                  aria-label="color"
-                  sx={{ padding: 0, color: color }}
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={menuOpen}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                  PaperProps={{
+                    style: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: 300,
+                      height: 150,
+                      padding: '10px 0 10px 10px',
+                    },
+                  }}
+                  sx={{ mt: 1.2 }}
                 >
-                  <CircleIcon />
-                </IconButton>
-                <IconButton
-                  color="inherit"
-                  sx={{ padding: 0, color: 'lightgray' }}
-                >
-                  <ArrowDropDownIcon sx={{ fontSize: 28 }} />
-                </IconButton>
+                  <CirclePicker
+                    width="600"
+                    color={color}
+                    onChangeComplete={handleChangeComplete}
+                  />
+                </Menu>
               </Grid>
             </Grid>
             {!isDesktop && (
