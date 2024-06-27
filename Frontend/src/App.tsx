@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import RoutineMain from './pages/routine/RoutineMain'
-
 import CategoryMain from './pages/category/CategoryMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
 
