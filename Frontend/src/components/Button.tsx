@@ -1,7 +1,6 @@
-//버튼 공통컴포넌트
-
-const Button = () => {
+const Button:React.FC  = () => {
   return <></>;
 };
 
 export default Button;
+

@@ -1,0 +1,20 @@
+import { Dayjs } from "dayjs";
+
+export interface CategoryType {
+    editIdx:number;
+    category: string;
+    color: string;
+}
+
+export interface PeriodType {
+    value:string;
+    label:string;
+}
+
+export type RoutineType = {
+    routineName: string;
+    dateRange: [Dayjs | null, Dayjs | null];
+    period: string
+    };
+
+export type RoutineTypeonlyRoutineName = Pick<RoutineType,'routineName'>

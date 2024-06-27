@@ -1,7 +1,6 @@
-//메인
-
-const Main = () => {
+const Main:React.FC  = () => {
   return <></>;
 };
 
 export default Main;
+
