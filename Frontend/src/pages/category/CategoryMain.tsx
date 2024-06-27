@@ -1,26 +1,10 @@
-import {
-  Button,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-import AddIcon from '@mui/icons-material/Add';
+import { Grid } from '@mui/material';
 
 import { useState } from 'react';
 
-import AddCategory from './AddCategory';
-import CategoryList from './CategoryList';
-import CategoryHeader from './CategoryHeader';
-
-export interface Category {
-  category: string;
-  color: string;
-}
+import CategoryHeader from './categoryHeader/CategoryHeader';
+import CategoryList from './categoryList/CategoryList';
+import { Category } from './type';
 
 const CategoryMain: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -45,9 +29,8 @@ const CategoryMain: React.FC = () => {
         p: 6,
       }}
     >
-      <CategoryHeader handleOpen={handleOpen} />
-
-      <AddCategory
+      <CategoryHeader
+        handleOpen={handleOpen}
         open={open}
         setOpen={setOpen}
         handleClose={handleClose}

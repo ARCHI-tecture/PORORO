@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -15,10 +16,12 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.101",
     "@types/react": "^18.3.3",
+    "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "react": "^18.3.1",
+    "react-color": "^2.19.3",
     "react-cookie": "^7.1.4",
     "react-do": "^1.1.6",
     "react-dom": "^18.3.1",
@@ -27,6 +30,7 @@
     "react-router-dom": "^6.24.0",
     "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.5",
+    "styled-components": "^6.1.11",
     "sweetalert2": "^11.12.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
