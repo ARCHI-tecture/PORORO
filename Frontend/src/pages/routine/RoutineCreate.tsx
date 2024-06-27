@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,10 +9,25 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { PeriodType } from './RoutineType';
 import { Dayjs } from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export const RoutineCreate = () => {
+interface RoutineCreateProps {
+  categoryIndex: number;
+}
+
+export const RoutineCreate: React.FC<RoutineCreateProps> = () => {
   const navigate = useNavigate();
+  const { categoryIndex } = useParams<{ categoryIndex?: string }>();
+  const [parsedCategoryIndex, setParsedCategoryIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (categoryIndex) {
+      const parsedIndex = parseInt(categoryIndex, 10);
+      if (!isNaN(parsedIndex)) {
+        setParsedCategoryIndex(parsedIndex);
+      }
+    }
+  }, [categoryIndex]);
 
   const periodOptions: PeriodType[] = [
     { value: '매일', label: '매일' },
@@ -38,6 +53,7 @@ export const RoutineCreate = () => {
 
   const handleSave = () => {
     const routineData = {
+      id: parsedCategoryIndex,
       routineName,
       dateRange,
       period,
@@ -62,10 +78,9 @@ export const RoutineCreate = () => {
     // 새로운 데이터 추가
     updatedData.push(routineData);
 
-    // 로컬 스토리지에 저장
     localStorage.setItem('routineData', JSON.stringify(updatedData));
 
-    console.log('Saved data:', JSON.stringify(updatedData)); // 저장된 데이터 콘솔에 출력
+    console.log('Saved data:', JSON.stringify(updatedData));
 
     navigate('/routine');
   };
@@ -114,7 +129,6 @@ export const RoutineCreate = () => {
         <Button onClick={handleSave} variant="contained" color="primary">
           Save
         </Button>
-
       </Box>
     </>
   );
