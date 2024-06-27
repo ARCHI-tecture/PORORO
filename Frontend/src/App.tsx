@@ -1,9 +1,17 @@
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import RoutineMain from './page/routine/RoutineMain'
+import { RoutineCreate } from './page/routine/RoutineCreate';
 
 function App() {
   return (
     <div className="App">
-      <h1>안냥하세여</h1>
+      <Router>
+        <Routes>
+          <Route path="/routine" element={<RoutineMain />} />
+          <Route path="/routinecreate" element={<RoutineCreate />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
