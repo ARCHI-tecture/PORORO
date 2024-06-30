@@ -1,62 +1,71 @@
-import React, { useEffect, useRef } from 'react';
-import { format, addMonths, startOfMonth } from 'date-fns';
-import uuid from 'react-uuid';
-import Header from './Calendar/Header';
-import Days from './Calendar/Days';
-import Cells from './Calendar/Cells';
+import React, { useState } from 'react';
+import dayjs from 'dayjs';
 
-import 'tailwindcss/tailwind.css'; // Import tailwindCSS
+interface RenderCalendarBoardProps {
+  selectedDay: string;
+  handleSelectDate: (v: string) => void;
+}
 
-const HomeCalendar: React.FC = () => {
-  const currentDate = new Date();
-  const selectedDate = new Date();
-
-  let currentMonth = new Date(format(currentDate, 'yyyy'));
-  let months: JSX.Element[] = [];
-
-  const monthRef = useRef<HTMLDivElement>(null);
-
-  for (let i = 0; i < 12; i++) {
-    months.push(
-      <div
-        className="calendar__item p-4 rounded-lg border border-gray-200 shadow-md"
-        key={uuid()}
-        ref={
-          format(currentMonth, 'MM') === format(selectedDate, 'MM')
-            ? monthRef
-            : null
-        }
-      >
-        <Header currentMonth={currentMonth} />
-        <Days />
-        <Cells currentMonth={currentMonth} selectedDate={selectedDate} />
-      </div>,
+const RenderCalendarBoard: React.FC<RenderCalendarBoardProps> = ({
+  selectedDay,
+  handleSelectDate,
+}) => {
+  const initArr = (firstDay: number, daysInMonth: number) => {
+    return Array.from({ length: firstDay + daysInMonth }, (v, i) =>
+      i < firstDay
+        ? null
+        : dayjs(selectedDay)
+            .startOf('month')
+            .set('date', i - firstDay + 1)
+            .format('MM/DD/YY'),
     );
-    currentMonth = addMonths(currentMonth, 1);
-  }
+  };
 
-  useEffect(() => {
-    if (monthRef.current !== null) {
-      monthRef.current.scrollIntoView({ behavior: 'auto' });
-    }
-  }, []);
+  const [arr, setArr] = useState<(string | null)[]>([null]);
 
-  function scrollCurrentMonth() {
-    if (monthRef.current !== null) {
-      monthRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
+  React.useEffect(() => {
+    const firstDay = dayjs(selectedDay).startOf('month').day();
+    const daysInMonth = dayjs(selectedDay).daysInMonth();
+    setArr(initArr(firstDay, daysInMonth));
+  }, [selectedDay]);
+
+  const Item: React.FC<{ isSelected: boolean }> = ({
+    isSelected,
+    children,
+  }) => (
+    <div className={`item ${isSelected ? 'selected' : ''}`}>{children}</div>
+  );
+
+  const content = arr.map((v, i) => (
+    <Item key={v ? v.toString() : `${v}${i}`} isSelected={selectedDay === v}>
+      {v && (
+        <div onClick={() => handleSelectDate(v)}>
+          {/* TodoCheck와 날짜를 표시할 부분에 대한 수정이 필요 */}
+          <span>{dayjs(v).date()}</span>
+        </div>
+      )}
+    </Item>
+  ));
+
+  return <>{content}</>;
+};
+
+const HomeCalendar = () => {
+  const [selectedDay, setSelectedDay] = useState<string>(
+    dayjs().format('MM/DD/YY'),
+  );
+
+  const handleSelectDate = (v: string) => {
+    setSelectedDay(v);
+  };
 
   return (
-    <div className="schedule-calendar flex flex-col items-center w-full max-w-screen-lg mx-auto p-8">
-      <div className="text-today mb-8 text-center">
-        <p className="text-current cursor-pointer" onClick={scrollCurrentMonth}>
-          {currentDate.toLocaleString('en-US', { month: 'long' })}{' '}
-          {format(currentDate, 'dd')}
-        </p>
-        <p className="text-year">{format(currentDate, 'yyyy')}</p>
-      </div>
-      <div className="calendar-list grid grid-cols-3 gap-4">{months}</div>
+    <div>
+      <h1>Calendar</h1>
+      <RenderCalendarBoard
+        selectedDay={selectedDay}
+        handleSelectDate={handleSelectDate}
+      />
     </div>
   );
 };

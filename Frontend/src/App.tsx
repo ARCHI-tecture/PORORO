@@ -6,7 +6,9 @@ import { RoutineCreate } from './pages/routine/RoutineCreate';
 import CategoryMain from './pages/category/CategoryMain';
 // import Calendar from './pages/home/Calendar'; // 파일 경로가 정확한지 확인4
 // import Calendar from './pages/home/Calendar';
-import HomeCalendar from './pages/home/HomeCalendar';
+// import HomeCalendar from './pages/home/HomeCalendar';
+// import Test from './pages/home/Test';
+import Feed from './pages/home/Feed/Feed';
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
       <Router>
         <Routes>
           {/* <Route path="/" element={<Calendar />} /> */}
-          <Route path="/" element={<HomeCalendar />} />
+          {/* <Route path="/" element={<Test />} /> */}
+          <Route path="/" element={<Feed />} />
           <Route path="/routine" element={<RoutineMain />} />
           <Route path="/routinecreate" element={<RoutineCreate />} />
           <Route path="/category" element={<CategoryMain />} />

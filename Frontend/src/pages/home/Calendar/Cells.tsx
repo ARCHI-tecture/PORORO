@@ -1,70 +1,86 @@
-import React from 'react';
-import {
-  format,
-  addDays,
-  isSameDay,
-  isSameMonth,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-} from 'date-fns';
-import uuid from 'react-uuid';
+// import React, { useState } from 'react';
+// import dayjs from 'dayjs';
+// import './Calendar.css';
 
-interface CellsProps {
-  currentMonth: Date;
-  selectedDate: Date;
-}
+// const Calendar: React.FC = () => {
+//   const [selectedDay, setSelectedDay] = useState<string>(
+//     dayjs().format('MM/DD/YY'),
+//   );
 
-const Cells: React.FC<CellsProps> = ({ currentMonth, selectedDate }) => {
-  const monthStart = startOfMonth(currentMonth);
-  const monthEnd = endOfMonth(monthStart);
-  const startDate = startOfWeek(monthStart);
-  const endDate = endOfWeek(monthEnd);
+//   const handleSelectDate = (v: string) => {
+//     setSelectedDay(v);
+//   };
 
-  const rows: JSX.Element[] = [];
-  let days: JSX.Element[] = [];
-  let day = startDate;
-  let formattedDate = '';
+//   const renderCalendarBoard = (
+//     selectedDay: string,
+//     handleSelectDate: (v: string) => void,
+//   ) => {
+//     const startOfMonth = dayjs(selectedDay).startOf('month');
+//     const endOfMonth = dayjs(selectedDay).endOf('month');
+//     const daysInMonth = endOfMonth.date();
+//     const firstDayIndex = startOfMonth.day();
 
-  while (day <= endDate) {
-    for (let i = 0; i < 7; i++) {
-      formattedDate = format(day, 'd');
-      days.push(
-        <div
-          className={`col cell ${
-            !isSameMonth(day, monthStart)
-              ? 'disabled'
-              : isSameDay(day, selectedDate)
-                ? 'selected'
-                : 'not-valid'
-          }`}
-          key={uuid()}
-        >
-          <span
-            className={
-              format(currentMonth, 'M') !== format(day, 'M')
-                ? 'text not-valid'
-                : isSameMonth(day, monthStart) && isSameDay(day, selectedDate)
-                  ? 'text today'
-                  : ''
-            }
-          >
-            {formattedDate}
-          </span>
-        </div>,
-      );
-      day = addDays(day, 1);
-    }
-    rows.push(
-      <div className="row" key={uuid()}>
-        {days}
-      </div>,
-    );
-    days = [];
-  }
+//     const calendar: JSX.Element[] = [];
 
-  return <div className="body">{rows}</div>;
-};
+//     for (let i = 0; i < firstDayIndex; i++) {
+//       calendar.push(<div key={`empty-${i}`} className="empty-cell"></div>);
+//     }
 
-export default Cells;
+//     for (let day = 1; day <= daysInMonth; day++) {
+//       const date = startOfMonth.date(day).format('MM/DD/YY');
+//       calendar.push(
+//         <div
+//           key={day}
+//           className={`day-cell ${date === selectedDay ? 'selected' : ''}`}
+//           onClick={() => handleSelectDate(date)}
+//         >
+//           {day}
+//         </div>,
+//       );
+//     }
+
+//     return calendar;
+//   };
+
+//   const board = renderCalendarBoard(selectedDay, handleSelectDate);
+
+//   return (
+//     <div className="calendar-wrapper">
+//       <div className="calendar-header">
+//         <button
+//           onClick={() =>
+//             setSelectedDay(
+//               dayjs(selectedDay).subtract(1, 'month').format('MM/DD/YY'),
+//             )
+//           }
+//         >
+//           Prev
+//         </button>
+//         <h2>{dayjs(selectedDay).format('MMMM YYYY')}</h2>
+//         <button
+//           onClick={() =>
+//             setSelectedDay(
+//               dayjs(selectedDay).add(1, 'month').format('MM/DD/YY'),
+//             )
+//           }
+//         >
+//           Next
+//         </button>
+//       </div>
+//       <div className="calendar-board">
+//         <div className="day-names">
+//           <div>Sun</div>
+//           <div>Mon</div>
+//           <div>Tue</div>
+//           <div>Wed</div>
+//           <div>Thu</div>
+//           <div>Fri</div>
+//           <div>Sat</div>
+//         </div>
+//         <div className="days">{board}</div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Calendar;
