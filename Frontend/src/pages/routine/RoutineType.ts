@@ -12,9 +12,12 @@ export interface PeriodType {
 }
 
 export type RoutineType = {
+    id:number;
     routineName: string;
     dateRange: [Dayjs | null, Dayjs | null];
     period: string
+    category?: number;
     };
+
 
 export type RoutineTypeonlyRoutineName = Pick<RoutineType,'routineName'>

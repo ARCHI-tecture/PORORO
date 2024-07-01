@@ -1,8 +1,10 @@
 import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CategoryType } from './RoutineType';
-import { RoutineCategoryList } from './RoutineCategoryList';
+
 import { RoutineCreateList } from './RoutineCreateList';
+import { RoutineCategoryList } from './RoutineCategoryList';
+
 
 
 const RoutineMain: React.FC = () => {
@@ -20,7 +22,8 @@ const RoutineMain: React.FC = () => {
       </button>
       <div>
         <RoutineCategoryList/>
-        <RoutineCreateList />
+
+
       </div>
     </>
   );
