@@ -10,9 +10,15 @@ import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { PeriodType } from './RoutineType';
 import { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import ReactDatePicker from "react-datepicker";
+import ko from "date-fns/locale/ko";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const RoutineCreate: React.FC = () => {
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
+
 
   // 로컬 스토리지에서 categoryIndex를 가져옴
   const categoryIndex = Number(localStorage.getItem('categoryIndex'));
@@ -24,14 +30,14 @@ export const RoutineCreate: React.FC = () => {
   ];
 
   const [routineName, setRoutineName] = useState<string>('');
-  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
+  const [dateRange, setDateRange] = useState<[typeof startDate | null, typeof endDate | null]>([null, null]);
   const [period, setPeriod] = useState<string>('매일');
 
   const handleRoutineNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRoutineName(event.target.value);
   };
 
-  const handleDateRangeChange = (newDateRange: [Dayjs | null, Dayjs | null]) => {
+  const handleDateRangeChange = (newDateRange: [typeof startDate | null, typeof endDate | null]) => {
     setDateRange(newDateRange);
   };
 
@@ -81,17 +87,19 @@ export const RoutineCreate: React.FC = () => {
           value={routineName}
           onChange={handleRoutineNameChange}
         />
-
         <div>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateRangePicker']}>
-              <DateRangePicker
-                localeText={{ start: 'Check-in', end: 'Check-out' }}
-                value={dateRange}
-                onChange={handleDateRangeChange}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
+          <ReactDatePicker
+		        selected={startDate}
+            onChange={(date) => handleDateRangeChange([startDate, date])}
+
+          />
+          <ReactDatePicker
+            selected={endDate}
+            onChange={(date) => handleDateRangeChange([endDate, date])}
+
+          />
+
+
         </div>
 
         <div>
