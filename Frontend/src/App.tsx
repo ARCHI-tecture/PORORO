@@ -4,8 +4,8 @@ import RoutineMain from './pages/routine/RoutineMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
 
 import CategoryMain from './pages/category/CategoryMain';
+import TimerMain from './pages/timer/TimerMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
-
 function App() {
   return (
     <div className="App">
@@ -14,6 +14,7 @@ function App() {
           <Route path="/routine" element={<RoutineMain />} />
           <Route path="/routinecreate" element={<RoutineCreate categoryIndex={0} />} />
           <Route path="/category" element={<CategoryMain />} />
+          <Route path="/pomodoro" element={<TimerMain />} />
         </Routes>
       </Router>
     </div>
