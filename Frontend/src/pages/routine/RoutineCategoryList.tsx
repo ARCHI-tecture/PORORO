@@ -1,15 +1,15 @@
 import React, { useEffect,  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CategoryType } from './RoutineType';
-
+import { RoutineCreateList } from './RoutineCreateList';
 
 export const RoutineCategoryList = () => {
   const navigate = useNavigate();
 
-  const handleRoutineCreateNavigate = (): void => {
-    navigate('/routinecreate');
+  const handleRoutineCreateNavigate = (categoryIndex: number): void => {
+    console.log(categoryIndex);
+    navigate('/routinecreate', { state: { categoryIndex } });
   };
-
   const initialCategory: CategoryType ={
     editIdx: 0,
     category: '카테고리가 없습니다',
@@ -34,15 +34,16 @@ export const RoutineCategoryList = () => {
 
   return (
     <div>
-      {localCategory.map((category, index) => (
-          <div key={index}>
+      {localCategory.map((category, categoryIndex) => (
+          <div key={categoryIndex}>
             <p style={{ color: category.color }}>{category.category}
-              {index?
-                <button onClick={handleRoutineCreateNavigate}>+</button>
+              {categoryIndex>=0?
+                <button onClick={()=>handleRoutineCreateNavigate(categoryIndex)}>+</button>
                 :
                 ''
               }
             </p>
+            <RoutineCreateList categoryIndex={categoryIndex}/>
           </div>
         ))}
     </div>
