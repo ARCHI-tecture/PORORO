@@ -76,6 +76,12 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
     editCategory(editedCategory);
   }, [editedCategory]);
 
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setAnchorEl(null);
+    });
+  }, []);
+
   return (
     <>
       <Grid className="w-full flex items-center mt-2 ml-1">

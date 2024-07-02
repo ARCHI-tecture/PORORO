@@ -12,7 +12,7 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CircleIcon from '@mui/icons-material/Circle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CategoryHeaderPropsType } from '../type';
 import { CirclePicker, ColorResult } from 'react-color';
 
@@ -66,6 +66,12 @@ const AddCategory: React.FC<CategoryHeaderPropsType> = ({
       setOpen(false);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setAnchorEl(null);
+    });
+  }, []);
 
   return (
     <>
