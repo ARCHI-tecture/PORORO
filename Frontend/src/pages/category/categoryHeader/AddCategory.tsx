@@ -106,95 +106,98 @@ const AddCategory: React.FC<CategoryHeaderPropsType> = ({
                 완료
               </Button>
             </Grid>
-
-            <TextField
-              id="standard-basic"
-              label="카테고리 입력"
-              value={category}
-              variant="standard"
-              InputLabelProps={{
-                className: 'text-xl',
-              }}
-              InputProps={{
-                className: 'text-xl pt-1 pb-1',
-              }}
-              className="w-full mb-1"
-              onChange={(e) => {
-                setCategory(e.target.value);
-              }}
-            />
-            <Typography
-              ref={sameCategoryAlert}
-              className={` text-red-500 mb-1 ${isVisible ? 'block' : 'hidden'}`}
-            >
-              같은 카테고리가 있습니다!
-            </Typography>
-            <Grid className="flex flex-col items-center cursor-pointer mt-1">
-              <Grid
-                className="w-full flex justify-between items-center cursor-pointer mt-2"
-                id="basic-button"
-                aria-controls={menuOpen ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={menuOpen ? 'true' : undefined}
-                onClick={handleClick}
+            <Grid className="pl-3">
+              <TextField
+                id="standard-basic"
+                label="카테고리 입력"
+                value={category}
+                variant="standard"
+                InputLabelProps={{
+                  className: 'text-xl',
+                }}
+                InputProps={{
+                  className: 'text-xl pt-1 pb-1',
+                }}
+                className="w-full mb-1"
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+              />
+              <Typography
+                ref={sameCategoryAlert}
+                className={` text-red-500 mb-1 ${
+                  isVisible ? 'block' : 'hidden'
+                }`}
               >
-                <Typography className="text-xl">색상</Typography>
+                같은 카테고리가 있습니다!
+              </Typography>
+              <Grid className="flex flex-col items-center cursor-pointer mt-1">
+                <Grid
+                  className="w-full flex justify-between items-center cursor-pointer mt-2"
+                  id="basic-button"
+                  aria-controls={menuOpen ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={menuOpen ? 'true' : undefined}
+                  onClick={handleClick}
+                >
+                  <Typography className="text-xl">색상</Typography>
+                  <Grid>
+                    <IconButton
+                      aria-label="color"
+                      className="p-0"
+                      sx={{ color: color }}
+                    >
+                      <CircleIcon />
+                    </IconButton>
+                    <IconButton color="inherit" className="p-0 text-gray-300">
+                      <ArrowDropDownIcon className="text-3xl" />
+                    </IconButton>
+                  </Grid>
+                </Grid>
                 <Grid>
-                  <IconButton
-                    aria-label="color"
-                    className="p-0"
-                    sx={{ color: color }}
+                  <Menu
+                    className="mt-2"
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={menuOpen}
+                    onClose={handleMenuClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                    PaperProps={{
+                      style: {
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: 300,
+                        height: 150,
+                        padding: '10px 0 10px 10px',
+                      },
+                    }}
                   >
-                    <CircleIcon />
-                  </IconButton>
-                  <IconButton color="inherit" className="p-0 text-gray-300">
-                    <ArrowDropDownIcon className="text-3xl" />
-                  </IconButton>
+                    <CirclePicker
+                      width="600"
+                      color={color}
+                      onChangeComplete={handleChangeComplete}
+                    />
+                  </Menu>
                 </Grid>
               </Grid>
-              <Grid>
-                <Menu
-                  className="mt-2"
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={menuOpen}
-                  onClose={handleMenuClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                  }}
-                  PaperProps={{
-                    style: {
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: 300,
-                      height: 150,
-                      padding: '10px 0 10px 10px',
-                    },
-                  }}
-                >
-                  <CirclePicker
-                    width="600"
-                    color={color}
-                    onChangeComplete={handleChangeComplete}
-                  />
-                </Menu>
-              </Grid>
-            </Grid>
 
-            <Button
-              className="w-1/2 bg-mainYellow m-12 text-black md:hidden block"
-              onClick={addCategory}
-            >
-              등록
-            </Button>
+              <Button
+                className="w-1/2 bg-mainYellow mt-24 ml-12 text-black md:hidden block"
+                onClick={addCategory}
+              >
+                등록
+              </Button>
+            </Grid>
           </Box>
         </Box>
       </Modal>

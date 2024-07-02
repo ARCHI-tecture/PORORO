@@ -33,7 +33,7 @@ const CategoryList: React.FC<CategoryListType> = ({
 
   return (
     <>
-      <Grid className="w-2/3 min-w-64">
+      <Grid className="w-2/3 min-w-64 max-w-3xl">
         {categoryArr &&
           categoryArr.map((cate: any, idx: number) => (
             <Grid className="flex flex-col" key={idx}>

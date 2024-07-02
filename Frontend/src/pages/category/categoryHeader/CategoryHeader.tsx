@@ -23,7 +23,7 @@ const CategoryHeader: React.FC<CategoryHeaderType> = ({
 
   return (
     <>
-      <Grid className="w-4/5 flex justify-between items-center min-w-sm">
+      <Grid className="w-4/5 flex justify-between items-center min-w-xs max-w-5xl">
         <IconButton
           aria-label="back"
           color="inherit"
