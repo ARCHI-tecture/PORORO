@@ -10,7 +10,7 @@ import CategoryMain from './pages/category/CategoryMain';
 // import Test from './pages/home/Test';
 import Feed from './pages/home/Feed/Feed';
 import TimerMain from './pages/timer/TimerMain';
-import { RoutineCreate } from './pages/routine/RoutineCreate';
+
 function App() {
   return (
     <div className="App">
@@ -20,7 +20,10 @@ function App() {
           {/* <Route path="/" element={<Test />} /> */}
           <Route path="/" element={<Feed />} />
           <Route path="/routine" element={<RoutineMain />} />
-          <Route path="/routinecreate" element={<RoutineCreate categoryIndex={0} />} />
+          <Route
+            path="/routinecreate"
+            element={<RoutineCreate categoryIndex={0} />}
+          />
           <Route path="/category" element={<CategoryMain />} />
           <Route path="/pomodoro" element={<TimerMain />} />
         </Routes>

@@ -30,6 +30,7 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [editedColor, setEditedColor] = useState<string>(cate.color);
   const [editedCategory, setEditedCategory] = useState<string>('');
+  const [isVisible, setIsVisible] = useState(false);
 
   const sameEditedCategoryAlert = useRef<HTMLDivElement>(null);
   const menuOpen = Boolean(anchorEl);
@@ -44,7 +45,7 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
       categoryArr.some((cate: any) => cate.category === editedCategory) &&
       sameEditedCategoryAlert.current
     ) {
-      sameEditedCategoryAlert.current.style.display = 'block';
+      setIsVisible(true);
     } else if (editedCategory) {
       cate.category = editedCategory;
       categoryArr[idx] = cate;
@@ -77,40 +78,25 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
 
   return (
     <>
-      <Grid
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          mt: 2,
-          ml: 1,
-        }}
-      >
+      <Grid className="w-full flex items-center mt-2 ml-1">
         <TextField
+          className="w-full mb-2"
           id="standard-basic"
           label="카테고리 수정"
           defaultValue={cate.category}
           variant="standard"
           InputLabelProps={{
-            sx: {
-              fontSize: 20,
-              color: 'lightgray',
-            },
+            className: 'text-xl text-gray-300',
           }}
           InputProps={{
-            sx: {
-              fontSize: 20,
-              pt: 0.5,
-              pb: 0.5,
-            },
+            className: 'text-xl pt-1 pb-1',
           }}
-          sx={{ width: '90%', mb: 2 }}
           onChange={(e: any) => {
             editCategory(e.target.value);
           }}
         />
         <Grid
-          sx={{ display: ' flex', ml: -6 }}
+          className="flex -ml-11"
           id="basic-button"
           aria-controls={menuOpen ? 'basic-menu' : undefined}
           aria-haspopup="true"
@@ -118,23 +104,19 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
           onClick={handleClick}
         >
           <IconButton
+            className="p-0"
             aria-label="color"
-            sx={{ padding: 0, color: editedColor }}
+            sx={{ color: editedColor }}
           >
             <CircleIcon />
           </IconButton>
-          <IconButton color="inherit" sx={{ padding: 0, color: 'lightgray' }}>
-            <ArrowDropDownIcon sx={{ fontSize: 28 }} />
+          <IconButton color="inherit" className="p-0 text-gray-300">
+            <ArrowDropDownIcon className="text-3xl" />
           </IconButton>
         </Grid>
         <Button
+          className="h-10 text-black bg-gray-300"
           variant="contained"
-          sx={{
-            width: 50,
-            height: 40,
-            color: 'black',
-            backgroundColor: 'lightgray',
-          }}
           onClick={submitEditedCategory}
         >
           등록
@@ -142,6 +124,7 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
       </Grid>
       <Grid>
         <Menu
+          className="mt-3"
           id="basic-menu"
           anchorEl={anchorEl}
           open={menuOpen}
@@ -158,15 +141,8 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
             'aria-labelledby': 'basic-button',
           }}
           PaperProps={{
-            style: {
-              display: 'flex',
-              alignItems: 'center',
-              width: 300,
-              height: 150,
-              padding: '10px 0 10px 10px',
-            },
+            className: 'flex items-center w-72 h-40 pl-5 ',
           }}
-          sx={{ mt: 1.2 }}
         >
           <CirclePicker
             width="600"
@@ -176,8 +152,8 @@ const EditCategory: React.FC<EditCategoryPropsType> = ({
         </Menu>
       </Grid>
       <Typography
+        className={`ml-1 text-red-500 ${isVisible ? 'block' : 'hidden'}`}
         ref={sameEditedCategoryAlert}
-        sx={{ ml: 1, color: 'red', display: 'none' }}
       >
         같은 카테고리가 있습니다!
       </Typography>
