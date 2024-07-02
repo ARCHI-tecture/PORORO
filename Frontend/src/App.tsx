@@ -1,18 +1,17 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import RoutineMain from './pages/routine/RoutineMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
 import CategoryMain from './pages/category/CategoryMain';
 import TimerMain from './pages/timer/TimerMain';
-import { Calender } from './pages/home/HomeCalendar';
+import { Calendar } from './pages/home/HomeCalendar';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Calender />} />
+          <Route path="/" element={<Calendar />} />
           <Route path="/routine" element={<RoutineMain />} />
           <Route
             path="/routinecreate"
