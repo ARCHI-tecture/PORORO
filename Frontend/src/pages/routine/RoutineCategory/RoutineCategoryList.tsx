@@ -36,7 +36,7 @@ export const RoutineCategoryList: React.FC = () => {
   }, []);
 
   return (
-    <div className=''>
+    <div >
       {localCategory.map((category, categoryIndex) => (
         <div
           key={categoryIndex}

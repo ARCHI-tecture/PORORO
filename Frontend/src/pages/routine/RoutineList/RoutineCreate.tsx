@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
@@ -7,14 +7,20 @@ import { PeriodType } from '../RoutineType';
 import { useNavigate } from 'react-router-dom';
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { IconButton } from '@mui/material';
+import { PiTildeBold } from "react-icons/pi";
 
 export const RoutineCreate: React.FC = () => {
   const navigate = useNavigate();
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  
 
+  const handleHomeNavigate = (): void => {
+    navigate('/routine');
+  };
 
-  // 로컬 스토리지에서 categoryIndex를 가져옵니다
   const categoryIndex = Number(localStorage.getItem('categoryIndex'));
 
   const periodOptions: PeriodType[] = [
@@ -24,7 +30,6 @@ export const RoutineCreate: React.FC = () => {
   ];
 
   const [routineName, setRoutineName] = useState<string>('');
-  const [dateRange, setDateRange] = useState<[typeof startDate | null, typeof endDate | null]>([null, null]);
   const [period, setPeriod] = useState<string>('매일');
 
   const [index, setIndex] = useState<number>(() => {
@@ -36,18 +41,20 @@ export const RoutineCreate: React.FC = () => {
           return parsedData[parsedData.length - 1].index + 1;
         }
       } catch (error) {
-        console.error('Error parsing existing data:', error);
+        console.error('기존 데이터 파싱 중 오류 발생:', error);
       }
     }
-    return 1; // 기본 인덱스 값
+    return 1;
   });
 
   const handleRoutineNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRoutineName(event.target.value);
   };
 
-  const handleDateRangeChange = (newDateRange: [typeof startDate | null, typeof endDate | null]) => {
-    setDateRange(newDateRange);
+  const handleDateRangeChange = (dates: [Date | null, Date | null]) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
   };
 
   const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +68,7 @@ export const RoutineCreate: React.FC = () => {
       index: index,
       id: categoryIndex,
       routineName,
-      dateRange,
+      dateRange: [startDate, endDate],
       period,
     };
 
@@ -73,10 +80,9 @@ export const RoutineCreate: React.FC = () => {
         updatedData = JSON.parse(existingData);
         if (!Array.isArray(updatedData)) {
           updatedData = [];
-
         }
       } catch (error) {
-        console.error('Error parsing existing data:', error);
+        console.error('기존 데이터 파싱 중 오류 발생:', error);
         updatedData = [];
       }
     }
@@ -88,34 +94,65 @@ export const RoutineCreate: React.FC = () => {
   };
 
   return (
-    <>
-      <h1>루틴</h1>
-      <Box>
-        <TextField
-          id="standard-basic"
-          label="루틴입력"
-          variant="standard"
-          value={routineName}
-          onChange={handleRoutineNameChange}
-        />
-        <div>
-          <ReactDatePicker
-		        selected={startDate}
-            onChange={(date) => handleDateRangeChange([startDate, date])}
-            dateFormat="yyyy년 MM월 dd일"
-          />
-          <ReactDatePicker
-            selected={endDate}
-            onChange={(date) => handleDateRangeChange([endDate, date])}
-            dateFormat="yyyy년 MM월 dd일"
-          />
+    <div className='flex flex-col justify-center items-center p-4'>
 
+      <div className='flex justify-between items-center max-w-screen-md w-full py-10 mb-20'>
+        <IconButton
+          aria-label="back"
+          color="inherit"
+          onClick={handleHomeNavigate}
+        >
+          <ArrowBackIosIcon />
+        </IconButton>
+        <h1 className='text-3xl text-center font-extrabold'>루틴</h1>
+        <div className='w-12'></div>
+      </div>
 
+      <div className='text-sm md:w-full max-w-screen-sm mobile:w-400'>
+        <div className='mb-10 w-full'>
+          <TextField
+            id="standard-basic"
+            label="루틴입력"
+            variant="standard"
+            value={routineName}
+            onChange={handleRoutineNameChange}
+            className='w-full'
+          />
         </div>
 
-        <div>
-          <label htmlFor="routineRepeat">반복</label>
-          <TextField
+        <div className='w-full mb-10 flex items-center mobile:block p-4'>
+          <div className='flex items-center border border-solid border-2px border-subColor4 rounded-xl p-1 mr-2 mobile:mr-0'>
+            <ReactDatePicker
+              selected={startDate}
+              onChange={(date) => handleDateRangeChange([date, endDate])}
+              dateFormat="yyyy년 MM월 dd일"
+              className='text-center'
+            />
+            <CalendarMonthIcon className="text-mainYellow ml-2"/>
+          </div>
+
+          <PiTildeBold className='m-2' />
+
+          <div className='flex items-center border border-solid border-2px border-subColor4 rounded-xl p-1 text-center ml-2 mobile:ml-0'>
+            <ReactDatePicker
+              selected={endDate}
+              onChange={(dates) => handleDateRangeChange([startDate, dates])}
+              dateFormat="yyyy년 MM월 dd일"
+              className='text-center'
+            />
+            <CalendarMonthIcon className="text-mainYellow ml-2" />
+          </div>
+        </div>
+
+        <div className='flex justify-between mb-4'>
+          <label
+            htmlFor="routineRepeat"
+            className='block mb-2 text-xl pl-4'>
+            주기
+          </label>
+          <div
+            className='pr-4 text-mainYellow'>
+            <TextField
             id="standard-select-currency"
             select
             value={period}
@@ -123,17 +160,28 @@ export const RoutineCreate: React.FC = () => {
             variant="standard"
           >
             {periodOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem
+                key={option.value}
+                value={option.value}
+              >
                 {option.label}
               </MenuItem>
             ))}
           </TextField>
+          </div>
         </div>
 
-        <Button onClick={handleSave} variant="contained" color="primary">
-          Save
-        </Button>
-      </Box>
-    </>
+        <div className='flex justify-center mt-40'>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            style={{ backgroundColor: '#FFD812', padding: '5px 70px', borderRadius: '20px' }}
+          >
+            등록
+          </Button>
+        </div>
+
+      </div>
+    </div>
   );
 };

@@ -2,7 +2,12 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false,
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        mainYellow: '#FFD812',
+        subColor4:'#817F82',
+      },
+    },
     screens: {
       'sm': '640px',
       'md': '768px',
