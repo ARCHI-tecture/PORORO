@@ -6,12 +6,13 @@ import { RoutineEditButtons } from './RoutineEditButtons';
 
 interface RoutineCreateListProps {
   categoryIndex: number;
-  categoryColor:string
+  categoryColor: string;
 }
 
-export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIndex,categoryColor }) => {
+export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIndex, categoryColor }) => {
   const [localRoutine, setLocalRoutine] = useState<RoutineType[]>([]);
   const [filteredRoutine, setFilteredRoutine] = useState<RoutineType[]>([]);
+  const [isEditing, setIsEditing] = useState<number | null>(null); // Track which routine is being edited
 
   useEffect(() => {
     try {
@@ -19,7 +20,6 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
       if (routineDatas) {
         const parsedRoutine: RoutineType[] = JSON.parse(routineDatas);
         setLocalRoutine(parsedRoutine);
-
       }
     } catch (error) {
       console.error('루틴 데이터를 불러오는 도중 오류가 발생했습니다:', error);
@@ -46,41 +46,51 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
 
   return (
     <div>
-    {filteredRoutine.length > 0 ? (
-      filteredRoutine.map((routine, index) => (
-        <div key={index}>
+      {filteredRoutine.length > 0 ? (
+        filteredRoutine.map((routine, index) => (
+          <div key={index}>
+            <div className='inline-flex justify-between items-center w-full '>
+              <div
+                style={{ borderColor: categoryColor }}
+                className='border-2 border-solid p-2 m-2 rounded-full inline-block'>
+              </div>
+              <div className='text-center m-2 text-lg font-extrabold'>
+                {routine.routineName}
+              </div>
 
-          <div className='inline-flex justify-between items-center w-full '>
-
-            <div
-              style={{ borderColor: categoryColor }}
-              className='border-2 border-solid p-2 m-2 rounded-full inline-block'>
-            </div>
-            <div className='text-center m-2 text-lg font-extrabold'>
-              {routine.routineName}
-            </div>
-
-            <div className='ml-auto flex w-500 '>
-              <div className='inline-flex space-x-2'>
-                <RoutineEditButtons
-                  initialRoutineName={routine.routineName}
-                  onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(index, newRoutineName)}
-                  routineIndex = {routine.index}
-                />
-                <RoutineDeleteButtons idToDelete={index} onDelete={handleDeleteRoutine} />
+              <div className='ml-auto flex w-500 '>
+                <div className='inline-flex space-x-2'>
+                  <RoutineEditButtons
+                    initialRoutineName={routine.routineName}
+                    onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(index, newRoutineName)}
+                    routineIndex={routine.index}
+                    isEditing={isEditing === routine.index}
+                    setIsEditing={(isEditing) => setIsEditing(isEditing ? routine.index : null)}
+                  />
+                  <RoutineDeleteButtons idToDelete={index} onDelete={handleDeleteRoutine} />
                 </div>
+              </div>
             </div>
 
-          </div>
+            <div className='ml-5 text-gray-400'>
+              {routine.dateRange.map(date => date ? dayjs(date).format('YYYY-MM-DD') : 'N/A').join(' ~ ')}
+            </div>
 
-          <div className='ml-5 text-gray-400'>
-            {routine.dateRange.map(date => date ? dayjs(date).format('YYYY-MM-DD') : 'N/A').join(' ~ ')}
+            {isEditing === routine.index && (
+              <div className='ml-5'>
+                <input
+                  className='border-b-2 border-black w-full mt-2'
+                  type="text"
+                  value={routine.routineName}
+                  onChange={(e) => handleUpdateRoutineName(index, e.target.value)}
+                />
+              </div>
+            )}
           </div>
-        </div>
-      ))
-    ) : (
-      <div className='font-extrabold text-gray-400'>루틴이 없습니다.</div>
-    )}
-  </div>
-);
+        ))
+      ) : (
+        <div className='font-extrabold text-gray-400'>루틴이 없습니다.</div>
+      )}
+    </div>
+  );
 };
