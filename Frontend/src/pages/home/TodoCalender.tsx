@@ -1,48 +1,73 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { addMonths, subMonths } from 'date-fns';
-import RenderHeader from './calender/RenderHeader';
-import RenderCells from './calender/RenderCells';
+import React from 'react';
+import { styled } from 'styled-components';
+import { MdArrowBackIos, MdArrowForwardIos, MdCheckBox } from 'react-icons/md';
+import { IoHeart } from 'react-icons/io5';
+import Calendar from './Calendar';
 
-export const HomeCalendar: React.FC = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+const CalendarHeadContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 26px;
+`;
 
-  const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
-  };
+const CalendarInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
 
-  const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
-  };
+const CalendarDate = styled.p`
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
 
-  const onDateClick = (day: Date) => {
-    setSelectedDate(day);
-  };
+const CalendarDone = styled.div`
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
 
-  const monthRef = useRef<HTMLDivElement>(null);
+const CalendarArrow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+`;
 
-  useEffect(() => {
-    if (monthRef.current !== null) {
-      monthRef.current.scrollIntoView({ behavior: 'auto' });
-    }
-  }, []);
-
+function TodoCalendar() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const text = `${year}년 ${month}월`;
   return (
-    <div className="schedule-calendar">
-      <div className="calendar__item" ref={monthRef}>
-        <RenderHeader
-          currentMonth={currentMonth}
-          prevMonth={prevMonth}
-          nextMonth={nextMonth}
-        />
-        <RenderCells
-          currentMonth={currentMonth}
-          selectedDate={selectedDate}
-          onDateClick={onDateClick}
-        />
-      </div>
-    </div>
+    <>
+      <CalendarHeadContainer>
+        <CalendarInfo>
+          <CalendarDate>{text}</CalendarDate>
+          <CalendarDone>
+            <MdCheckBox color="#8F8F8F" />
+            <span>27</span>
+          </CalendarDone>
+          <CalendarDone>
+            <IoHeart color="#DD2E44" />
+            <span>52</span>
+          </CalendarDone>
+        </CalendarInfo>
+        <CalendarArrow>
+          <MdArrowBackIos />
+          <MdArrowForwardIos />
+        </CalendarArrow>
+      </CalendarHeadContainer>
+      <Calendar />
+    </>
   );
-};
+}
 
-export default HomeCalendar;
+export default TodoCalendar;
