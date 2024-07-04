@@ -4,14 +4,14 @@ import RoutineMain from './pages/routine/RoutineMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
 import CategoryMain from './pages/category/CategoryMain';
 import TimerMain from './pages/timer/TimerMain';
-import TodoCalendar from './pages/home/Todocalender';
+import MainHome from './pages/home/MainHome';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<TodoCalendar />} />
+          <Route path="/" element={<MainHome />} />
           <Route path="/routine" element={<RoutineMain />} />
           <Route
             path="/routinecreate"
