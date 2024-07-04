@@ -17,6 +17,8 @@ export type RoutineType = {
     dateRange: [Dayjs | null, Dayjs | null];
     period: string
     category?: number;
+    color:string
+    index:number
     };
 
 
