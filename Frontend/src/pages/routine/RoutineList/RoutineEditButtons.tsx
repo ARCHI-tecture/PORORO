@@ -8,10 +8,17 @@ interface RoutineEditButtonsProps {
   initialRoutineName: string;
   onUpdateRoutineName: (newRoutineName: string) => void;
   routineIndex: number;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
 }
 
-export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({ routineIndex, initialRoutineName, onUpdateRoutineName }) => {
-  const [isEditing, setIsEditing] = useState(false);
+export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
+  routineIndex,
+  initialRoutineName,
+  onUpdateRoutineName,
+  isEditing,
+  setIsEditing,
+}) => {
   const [newRoutineName, setNewRoutineName] = useState(initialRoutineName);
 
   useEffect(() => {
@@ -49,7 +56,7 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({ routineI
       localStorage.setItem('routineData', JSON.stringify(updatedRoutineDatas));
       console.log(updatedRoutineDatas);
     } catch (error) {
-
+      console.error('Error updating routine data:', error);
     }
   };
 
@@ -61,9 +68,6 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({ routineI
     <>
       {isEditing ? (
         <div className=' space-x-2'>
-          <input
-            className='border-b-2 border-black '
-            type="text" value={newRoutineName} onChange={handleInputChange} />
           <IconButton onClick={handleSaveClick}><LibraryAddOutlinedIcon /></IconButton>
           <IconButton onClick={handleCancelClick}><CloseIcon /></IconButton>
         </div>
