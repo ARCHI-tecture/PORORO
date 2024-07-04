@@ -1,11 +1,11 @@
-export type HomeCalendarProps = {
+export interface HomeCalendarProps {
   currentMonth: Date;
   prevMonth: () => void;
   nextMonth: () => void;
-};
+}
 
-export type RenderCellsProps = {
+export interface RenderCellsProps {
   currentMonth: Date;
   selectedDate: Date;
   onDateClick: (day: Date) => void;
-};
+}
