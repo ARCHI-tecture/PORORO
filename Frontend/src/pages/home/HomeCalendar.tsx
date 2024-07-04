@@ -12,6 +12,7 @@ import {
   addDays,
 } from 'date-fns';
 import { HomeCalendarProps, RenderCellsProps } from './type';
+import { Icon } from '@iconify/react';
 
 const HomeCalendar: React.FC<HomeCalendarProps> = ({
   currentMonth,
@@ -21,50 +22,26 @@ const HomeCalendar: React.FC<HomeCalendarProps> = ({
   return (
     <div className="header row flex justify-between items-center p-2">
       <div className="col col-start">
-        <span className="text">
-          <span className="text month">{format(currentMonth, 'M')}월</span>
-          {format(currentMonth, 'yyyy')}
+        <span className="text relative">
+          <span className="text month absolute top-0 left-0">
+            {format(currentMonth, 'yyyy')}년
+          </span>
+          {format(currentMonth, 'M')}월
         </span>
       </div>
-      <div className="col col-end flex justify-between">
-        <button
-          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+
+      {/* 수평 정렬된 버튼들 */}
+      <div className="flex items-center justfy-center">
+        <Icon
+          icon="bi:arrow-left-circle-fill"
           onClick={prevMonth}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <button
-          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+          className="w-6 h-6"
+        />
+        <Icon
+          icon="bi:arrow-right-circle-fill"
           onClick={nextMonth}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+          className="w-6 h-6 ml-4"
+        />
       </div>
     </div>
   );
@@ -102,9 +79,9 @@ const RenderCells: React.FC<RenderCellsProps> = ({
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr>
-            {['Sun', 'Mon', 'Thu', 'Wed', 'Thrs', 'Fri', 'Sat'].map(
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
               (day, index) => (
-                <th key={index} className="p-2 border border-gray-300">
+                <th key={index} className="border border-gray-300 p-2">
                   {day}
                 </th>
               ),
@@ -119,7 +96,7 @@ const RenderCells: React.FC<RenderCellsProps> = ({
                 const isCurrentMonth = isSameMonth(date, monthStart);
                 const isCurrentDay = isSameDay(date, selectedDate);
 
-                let cellClassNames = 'p-2 border border-gray-300 text-center';
+                let cellClassNames = 'border border-gray-300 p-2 text-center';
                 if (!isCurrentMonth) {
                   cellClassNames += ' text-gray-400';
                 } else if (isCurrentDay) {
