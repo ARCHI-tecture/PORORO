@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { HomeCalendarProps } from '../type';
+import { Icon } from '@iconify/react';
 
 const RenderHeader: React.FC<HomeCalendarProps> = ({
   currentMonth,
@@ -17,9 +18,18 @@ const RenderHeader: React.FC<HomeCalendarProps> = ({
           {format(currentMonth, 'M')}월
         </span>
       </div>
-      <div className="flex items-center justify-center">
-        <button onClick={prevMonth}>이전</button>
-        <button onClick={nextMonth}>다음</button>
+      {/*수평정렬된 이전, 다음 버튼*/}
+      <div className="flex items-center justfy-center">
+        <Icon
+          icon="bi:arrow-left-circle-fill"
+          onClick={prevMonth}
+          className="w-6 h-6"
+        />
+        <Icon
+          icon="bi:arrow-right-circle-fill"
+          onClick={nextMonth}
+          className="w-6 h-6 ml-4"
+        />
       </div>
     </div>
   );

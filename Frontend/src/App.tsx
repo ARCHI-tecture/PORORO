@@ -4,7 +4,7 @@ import RoutineMain from './pages/routine/RoutineMain';
 import { RoutineCreate } from './pages/routine/RoutineCreate';
 import CategoryMain from './pages/category/CategoryMain';
 import TimerMain from './pages/timer/TimerMain';
-import HomeCalendar from './pages/home/HomeCalendar';
+import HomeCalendar from './pages/home/TodoCalender';
 
 function App() {
   return (
