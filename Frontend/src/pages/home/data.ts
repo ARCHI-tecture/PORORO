@@ -114,6 +114,12 @@ export const todoData = [
         text: '그릭요거트 구매',
         done: false,
       },
+      {
+        id: '15',
+        cateId: 3,
+        text: '코딩',
+        done: false,
+      },
     ],
   },
 ];
