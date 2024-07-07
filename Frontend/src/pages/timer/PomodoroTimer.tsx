@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 interface TimerProps {
   workDuration: number;
   breakDuration: number;
 }
+
+const CircleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d1d5db; /* Tailwind's gray-300 */
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+`;
 
 const PomodoroTimer: React.FC<TimerProps> = ({
   workDuration,
@@ -73,21 +84,43 @@ const PomodoroTimer: React.FC<TimerProps> = ({
   };
 
   return (
-    <div>
-      <div>{formatTime(timeLeft)}</div>
+    <div className="flex flex-col items-center mt-10">
+      <CircleContainer>
+        <div className="text-3xl font-semibold">{formatTime(timeLeft)}</div>
+      </CircleContainer>
       {!hasStarted ? (
-        <button onClick={handleStart}>시작</button>
+        <button
+          onClick={handleStart}
+          className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
+        >
+          시작
+        </button>
       ) : (
-        <div>
-          <button onClick={handlePauseResume}>
+        <div className="mt-4">
+          <button
+            onClick={handlePauseResume}
+            className="px-4 py-2 mr-2 text-white bg-blue-500 rounded"
+          >
             {isActive ? '일시정지' : '계속'}
           </button>
           {!isActive && hasStarted && (
-            <button onClick={handleStop}>정지</button>
+            <button
+              onClick={handleStop}
+              className="px-4 py-2 text-white bg-red-500 rounded"
+            >
+              정지
+            </button>
           )}
         </div>
       )}
-      {timerEnded && <button onClick={handleNextSession}>다음 작업</button>}
+      {timerEnded && (
+        <button
+          onClick={handleNextSession}
+          className="px-4 py-2 mt-4 text-white bg-green-500 rounded"
+        >
+          다음 작업
+        </button>
+      )}
     </div>
   );
 };
