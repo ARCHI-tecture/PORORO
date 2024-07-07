@@ -61,20 +61,24 @@ const TimerHeader: React.FC = () => {
           <ArrowBackIosIcon />
         </IconButton>
 
-        <IconButton color="inherit" onClick={toggleMenu}>
+        <IconButton
+          color="inherit"
+          onClick={toggleMenu}
+          className="inline-flex justify-center gap-x-1.5"
+        >
           <MoreHorizIcon className="text-3xl" />
         </IconButton>
       </Grid>
       {open && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg"
+          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
         >
           <ul className="py-1">
             <li>
               <button
                 className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                onClick={() => handleMenuNavigate('/#')}
+                onClick={() => handleMenuNavigate('/pomodoroset')}
               >
                 배경화면 설정
               </button>

@@ -12,8 +12,8 @@ const CircleContainer = styled.div`
   align-items: center;
   border: 1px solid #d1d5db; /* Tailwind's gray-300 */
   border-radius: 50%;
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
 `;
 
 const PomodoroTimer: React.FC<TimerProps> = ({
