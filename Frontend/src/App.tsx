@@ -9,6 +9,7 @@ import CategoryMain from './pages/category/CategoryMain';
 // import Test from './pages/home/Test';
 // import Feed from './pages/home/Feed/Feed';
 import TimerMain from './pages/timer/TimerMain';
+import TimerSetting from './pages/timer/TimerSetting';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           />
           <Route path="/category" element={<CategoryMain />} />
           <Route path="/pomodoro" element={<TimerMain />} />
+          <Route path="/pomodoro-set" element={<TimerSetting />} />
         </Routes>
       </Router>
     </div>
