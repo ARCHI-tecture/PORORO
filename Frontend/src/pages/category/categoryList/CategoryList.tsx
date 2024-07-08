@@ -23,35 +23,26 @@ const CategoryList: React.FC<CategoryListType> = ({
     editIdx === idx ? setEditIdx(-1) : setEditIdx(idx);
   };
 
+  const deleteCategory = (idx: number) => {
+    const newCategoryArr = categoryArr.filter(
+      (item: any) => item.category !== categoryArr[idx].category,
+    );
+    setCategoryArr(newCategoryArr);
+    localStorage.setItem('categoryArr', JSON.stringify(newCategoryArr));
+  };
+
   return (
     <>
-      <Grid sx={{ width: '70%' }}>
+      <Grid className="w-2/3 min-w-64 max-w-3xl">
         {categoryArr &&
           categoryArr.map((cate: any, idx: number) => (
-            <Grid sx={{ display: 'flex', flexDirection: ' column' }} key={idx}>
-              <Grid
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'start',
-                  mt: 3,
-                }}
-                key={idx}
-              >
-                <Grid
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
+            <Grid className="flex flex-col" key={idx}>
+              <Grid className="flex flex-col items-start mt-5" key={idx}>
+                <Grid className="w-full flex justify-between">
                   <Button
+                    className="bg-gray-300 rounded-3xl text-lg font-bold"
                     sx={{
                       color: cate.color,
-                      backgroundColor: 'lightgray',
-                      borderRadius: 20,
-                      fontSize: 18,
-                      fontWeight: 'bold',
                     }}
                     onClick={() => {
                       showEditCategory(idx);
@@ -71,15 +62,7 @@ const CategoryList: React.FC<CategoryListType> = ({
                     <IconButton
                       color="inherit"
                       onClick={() => {
-                        const newCategoryArr = categoryArr.filter(
-                          (item: any) =>
-                            item.category !== categoryArr[idx].category,
-                        );
-                        setCategoryArr(newCategoryArr);
-                        localStorage.setItem(
-                          'categoryArr',
-                          JSON.stringify(newCategoryArr),
-                        );
+                        deleteCategory(idx);
                       }}
                     >
                       <CloseIcon />

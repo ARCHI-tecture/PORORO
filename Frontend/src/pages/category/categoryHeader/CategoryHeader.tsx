@@ -23,14 +23,7 @@ const CategoryHeader: React.FC<CategoryHeaderType> = ({
 
   return (
     <>
-      <Grid
-        sx={{
-          width: '80%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <Grid className="w-4/5 flex justify-between items-center min-w-xs max-w-5xl">
         <IconButton
           aria-label="back"
           color="inherit"
@@ -40,11 +33,11 @@ const CategoryHeader: React.FC<CategoryHeaderType> = ({
         >
           <ArrowBackIosIcon />
         </IconButton>
-        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+        <Typography className="font-bold" variant="h5">
           카테고리
         </Typography>
         <IconButton aria-label="add" color="inherit" onClick={handleOpen}>
-          <AddIcon sx={{ fontSize: 32 }} />
+          <AddIcon className="text-3xl" />
         </IconButton>
       </Grid>
 
