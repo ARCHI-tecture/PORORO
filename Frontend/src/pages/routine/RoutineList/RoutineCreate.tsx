@@ -15,7 +15,7 @@ export const RoutineCreate: React.FC = () => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  
+
 
   const handleHomeNavigate = (): void => {
     navigate('/routine');
@@ -64,6 +64,8 @@ export const RoutineCreate: React.FC = () => {
   const handleSave = () => {
     setIndex(index + 1);
 
+    //id는 각 카데고리의인덱스: 중복가능
+    //index는 루틴 고유의 인덱스: 고유함
     const routineData = {
       index: index,
       id: categoryIndex,
@@ -71,7 +73,7 @@ export const RoutineCreate: React.FC = () => {
       dateRange: [startDate, endDate],
       period,
     };
-
+    console.log(index);
     const existingData = localStorage.getItem('routineData');
     let updatedData = [];
 

@@ -12,7 +12,7 @@ interface RoutineCreateListProps {
 export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIndex, categoryColor }) => {
   const [localRoutine, setLocalRoutine] = useState<RoutineType[]>([]);
   const [filteredRoutine, setFilteredRoutine] = useState<RoutineType[]>([]);
-  const [isEditing, setIsEditing] = useState<number | null>(null); // Track which routine is being edited
+  const [isEditing, setIsEditing] = useState<number | null>(null);
 
   useEffect(() => {
     try {
@@ -32,16 +32,17 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
   }, [localRoutine, categoryIndex]);
 
   const handleDeleteRoutine = (indexToDelete: number) => {
-    const updatedData = localRoutine.filter((item, index) => index !== indexToDelete);
+    const updatedData = localRoutine.filter((routine) => routine.index !== indexToDelete);
     localStorage.setItem('routineData', JSON.stringify(updatedData));
     setLocalRoutine(updatedData);
   };
 
   const handleUpdateRoutineName = (index: number, newRoutineName: string) => {
-    const updatedRoutines = localRoutine.map((routine, idx) =>
-      idx === index ? { ...routine, routineName: newRoutineName } : routine
+    const updatedRoutines = localRoutine.map((routine, index) =>
+      index === index ? { ...routine, routineName: newRoutineName } : routine
     );
     setLocalRoutine(updatedRoutines);
+    console.log(updatedRoutines);
   };
 
   return (
@@ -67,7 +68,7 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
                     isEditing={isEditing === routine.index}
                     setIsEditing={(isEditing) => setIsEditing(isEditing ? routine.index : null)}
                   />
-                  <RoutineDeleteButtons idToDelete={index} onDelete={handleDeleteRoutine} />
+                  <RoutineDeleteButtons idToDelete={routine.index} onDelete={handleDeleteRoutine} />
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -47,6 +47,8 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
       }[] = JSON.parse(routineDataString);
 
       const updatedRoutineDatas = routineDatas.map(routine => {
+        console.log(routineIndex);
+        console.log(routine);
         if (routine.index === routineIndex) {
           return { ...routine, routineName: newRoutineName };
         }
@@ -58,10 +60,6 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
     } catch (error) {
       console.error('Error updating routine data:', error);
     }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRoutineName(event.target.value);
   };
 
   return (
