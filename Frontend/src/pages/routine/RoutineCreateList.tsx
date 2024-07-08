@@ -10,6 +10,7 @@ interface RoutineCreateListProps {
 
 export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIndex }) => {
   const [localRoutine, setLocalRoutine] = useState<RoutineType[]>([]);
+  const [filteredRoutine, setFilteredRoutine] = useState<RoutineType[]>([]);
 
   useEffect(() => {
     try {
@@ -23,31 +24,28 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
     }
   }, []);
 
+  useEffect(() => {
+    const filtered = localRoutine.filter(routine => routine.id === categoryIndex);
+    setFilteredRoutine(filtered);
+  }, [localRoutine, categoryIndex]);
+
   const handleDeleteRoutine = (indexToDelete: number) => {
-    // indexToDelete에 해당하는 데이터를 삭제하는 로직 구현
     const updatedData = localRoutine.filter((item, index) => index !== indexToDelete);
-
     localStorage.setItem('routineData', JSON.stringify(updatedData));
-
-    console.log('Deleted data at index:', indexToDelete);
-    console.log('Updated data:', updatedData);
-
     setLocalRoutine(updatedData);
   };
-
-  const [routines, setRoutines] = useState<RoutineType[]>();
 
   const handleUpdateRoutineName = (index: number, newRoutineName: string) => {
     const updatedRoutines = localRoutine.map((routine, idx) =>
       idx === index ? { ...routine, routineName: newRoutineName } : routine
     );
-    setLocalRoutine(updatedRoutines); // setRoutines 대신 setLocalRoutine으로 변경
+    setLocalRoutine(updatedRoutines);
   };
 
   return (
     <div>
-      {localRoutine.length > 0 ? (
-        localRoutine.map((routine, index) => (
+      {filteredRoutine.length > 0 ? (
+        filteredRoutine.map((routine, index) => (
           <div key={index}>
             <div>{routine.routineName}</div>
             <div>
@@ -55,9 +53,9 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
             </div>
             <RoutineDeleteButtons idToDelete={index} onDelete={handleDeleteRoutine} />
             <RoutineEditButtons
-            initialRoutineName={routine.routineName}
-            onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(index, newRoutineName)}
-          />
+              initialRoutineName={routine.routineName}
+              onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(index, newRoutineName)}
+            />
           </div>
         ))
       ) : (
