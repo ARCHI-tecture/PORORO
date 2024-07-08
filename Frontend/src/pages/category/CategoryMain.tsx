@@ -20,15 +20,7 @@ const CategoryMain: React.FC = () => {
   const handleClose = (): void => setOpen(false);
 
   return (
-    <Grid
-      sx={{
-        width: '100vw',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        p: 6,
-      }}
-    >
+    <Grid className="w-screen flex flex-col items-center p-6">
       <CategoryHeader
         handleOpen={handleOpen}
         open={open}
