@@ -4,6 +4,7 @@ import RoutineMain from './pages/routine/RoutineMain';
 import CategoryMain from './pages/category/CategoryMain';
 import MainHome from './pages/home/MainHome';
 import TimerMain from './pages/timer/TimerMain';
+import TimerSetting from './pages/timer/TimerSetting';
 import RecordMain from './pages/record/RecordMain';
 import { RoutineCreate } from './pages/routine/RoutineList/RoutineCreate';
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/routinecreate" element={<RoutineCreate />} />
           <Route path="/category" element={<CategoryMain />} />
           <Route path="/pomodoro" element={<TimerMain />} />
+          <Route path="/pomodoro-set" element={<TimerSetting />} />
           <Route path="/record" element={<RecordMain />} />
         </Routes>
       </Router>
