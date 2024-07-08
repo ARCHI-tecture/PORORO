@@ -24,7 +24,9 @@ const RenderCalendarBoard: React.FC<RenderCalendarBoardProps> = ({
   const [arr, setArr] = useState<(string | null)[]>([null]);
 
   React.useEffect(() => {
-    const firstDay = dayjs(selectedDay).startOf('month').day();
+    const firstDay = dayjs(selectedDay)
+      .startOf('month')
+      .day();
     const daysInMonth = dayjs(selectedDay).daysInMonth();
     setArr(initArr(firstDay, daysInMonth));
   }, [selectedDay]);

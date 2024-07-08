@@ -7,8 +7,10 @@ import CategoryMain from './pages/category/CategoryMain';
 // import Test from './pages/home/Test';
 // import Feed from './pages/home/Feed/Feed';
 import TimerMain from './pages/timer/TimerMain';
+import RecordMain from './pages/record/RecordMain';
 import { RoutineCreate } from './pages/routine/RoutineList/RoutineCreate';
 // import Calendar from './pages/home/Test';
+
 function App() {
   return (
     <div className="App">
@@ -21,6 +23,7 @@ function App() {
           <Route path="/routinecreate" element={<RoutineCreate />} />
           <Route path="/category" element={<CategoryMain />} />
           <Route path="/pomodoro" element={<TimerMain />} />
+          <Route path="/record" element={<RecordMain />} />
         </Routes>
       </Router>
     </div>
