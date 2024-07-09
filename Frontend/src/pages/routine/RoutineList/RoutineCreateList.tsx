@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { RoutineDeleteButtons } from './RoutineDeleteButtons';
 import { RoutineEditButtons } from './RoutineEditButtons';
 
+
 interface RoutineCreateListProps {
   categoryIndex: number;
   categoryColor: string;
@@ -11,44 +12,35 @@ interface RoutineCreateListProps {
 
 export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIndex, categoryColor }) => {
   const [localRoutine, setLocalRoutine] = useState<RoutineType[]>([]);
-  const [filteredRoutine, setFilteredRoutine] = useState<RoutineType[]>([]);
   const [isEditing, setIsEditing] = useState<number | null>(null);
 
+  const handleUpdateRoutineName = (routineIndex: number, newRoutineName: string) => {
+    const updatedRoutines = localRoutine.map((routine) =>
+      routine.index === routineIndex ? { ...routine, routineName: newRoutineName } : routine
+    );
+    localStorage.setItem('routineData', JSON.stringify(updatedRoutines));
+    setLocalRoutine(updatedRoutines);
+  };
+
+  // 처음 데이터를 가져오는 동시에 각 카데고리별 루틴을 필터링합니다
   useEffect(() => {
     try {
       const routineDatas = localStorage.getItem('routineData');
       if (routineDatas) {
         const parsedRoutine: RoutineType[] = JSON.parse(routineDatas);
-        setLocalRoutine(parsedRoutine);
+
+        const filtered = parsedRoutine.filter(routine => routine.id === categoryIndex);
+        setLocalRoutine(filtered);
       }
     } catch (error) {
       console.error('루틴 데이터를 불러오는 도중 오류가 발생했습니다:', error);
     }
-  }, []);
-
-  useEffect(() => {
-    const filtered = localRoutine.filter(routine => routine.id === categoryIndex);
-    setFilteredRoutine(filtered);
-  }, [localRoutine, categoryIndex]);
-
-  const handleDeleteRoutine = (indexToDelete: number) => {
-    const updatedData = localRoutine.filter((routine) => routine.index !== indexToDelete);
-    localStorage.setItem('routineData', JSON.stringify(updatedData));
-    setLocalRoutine(updatedData);
-  };
-
-  const handleUpdateRoutineName = (index: number, newRoutineName: string) => {
-    const updatedRoutines = localRoutine.map((routine, index) =>
-      index === index ? { ...routine, routineName: newRoutineName } : routine
-    );
-    setLocalRoutine(updatedRoutines);
-    console.log(updatedRoutines);
-  };
+  }, [categoryIndex])
 
   return (
     <div>
-      {filteredRoutine.length > 0 ? (
-        filteredRoutine.map((routine, index) => (
+      {localRoutine.length > 0 ? (
+        localRoutine.map((routine, index) => (
           <div key={index}>
             <div className='inline-flex justify-between items-center w-full '>
               <div
@@ -63,12 +55,17 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
                 <div className='inline-flex space-x-2'>
                   <RoutineEditButtons
                     initialRoutineName={routine.routineName}
-                    onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(index, newRoutineName)}
+                    onUpdateRoutineName={(newRoutineName) => handleUpdateRoutineName(routine.index, newRoutineName)}
                     routineIndex={routine.index}
                     isEditing={isEditing === routine.index}
                     setIsEditing={(isEditing) => setIsEditing(isEditing ? routine.index : null)}
                   />
-                  <RoutineDeleteButtons idToDelete={routine.index} onDelete={handleDeleteRoutine} />
+                  <RoutineDeleteButtons
+                    idToDelete={routine.index}
+                    localRoutine={localRoutine}
+                    setLocalRoutine={setLocalRoutine}
+                    categoryIndex={categoryIndex}
+                  />
                 </div>
               </div>
             </div>
@@ -83,7 +80,7 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
                   className='border-b-2 border-black w-full mt-2'
                   type="text"
                   value={routine.routineName}
-                  onChange={(e) => handleUpdateRoutineName(index, e.target.value)}
+                  onChange={(e) => handleUpdateRoutineName(routine.index, e.target.value)}
                 />
               </div>
             )}

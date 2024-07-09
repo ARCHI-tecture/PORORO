@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
+import CheckIcon from '@mui/icons-material/Check';
 
 interface RoutineEditButtonsProps {
   initialRoutineName: string;
@@ -10,6 +10,7 @@ interface RoutineEditButtonsProps {
   routineIndex: number;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
+
 }
 
 export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
@@ -66,12 +67,12 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
     <>
       {isEditing ? (
         <div className=' space-x-2'>
-          <IconButton onClick={handleSaveClick}><LibraryAddOutlinedIcon /></IconButton>
+          <IconButton onClick={handleSaveClick}><CheckIcon /></IconButton>
           <IconButton onClick={handleCancelClick}><CloseIcon /></IconButton>
         </div>
       ) : (
         <IconButton onClick={handleEditClick}>
-          <EditIcon />
+          <EditIcon/>
         </IconButton>
       )}
     </>
