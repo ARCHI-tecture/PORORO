@@ -7,14 +7,13 @@ import CheckIcon from '@mui/icons-material/Check';
 interface RoutineEditButtonsProps {
   initialRoutineName: string;
   onUpdateRoutineName: (newRoutineName: string) => void;
-  routineIndex: number;
+
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
 
 }
 
 export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
-  routineIndex,
   initialRoutineName,
   onUpdateRoutineName,
   isEditing,
@@ -39,28 +38,6 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
     onUpdateRoutineName(newRoutineName);
     setIsEditing(false);
 
-    const routineDataString = localStorage.getItem('routineData');
-    if (!routineDataString) return;
-    console.log(routineDataString);
-    try {
-      let routineDatas: {
-        index: number; routineName: string;
-      }[] = JSON.parse(routineDataString);
-
-      const updatedRoutineDatas = routineDatas.map(routine => {
-        console.log(routineIndex);
-        console.log(routine);
-        if (routine.index === routineIndex) {
-          return { ...routine, routineName: newRoutineName };
-        }
-        return routine;
-      });
-
-      localStorage.setItem('routineData', JSON.stringify(updatedRoutineDatas));
-      console.log(updatedRoutineDatas);
-    } catch (error) {
-      console.error('Error updating routine data:', error);
-    }
   };
 
   return (
