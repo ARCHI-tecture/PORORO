@@ -10,12 +10,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { IconButton } from '@mui/material';
 import { PiTildeBold } from "react-icons/pi";
+import dayjs from 'dayjs';
+
 
 export const RoutineCreate: React.FC = () => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
+  const [startDatePickerOpen, setStartDatePickerOpen] = useState(false);
+  const [endDatePickerOpen, setEndDatePickerOpen] = useState(false);
 
   const handleHomeNavigate = (): void => {
     navigate('/routine');
@@ -73,7 +76,7 @@ export const RoutineCreate: React.FC = () => {
       dateRange: [startDate, endDate],
       period,
     };
-    console.log(index);
+    console.log('루틴데이터는 뭐가잇냐면',routineData);
     const existingData = localStorage.getItem('routineData');
     let updatedData = [];
 
@@ -97,12 +100,10 @@ export const RoutineCreate: React.FC = () => {
 
   return (
     <div className='flex flex-col justify-center items-center p-4'>
-
       <div className='flex justify-between items-center max-w-screen-md w-full py-10 mb-20'>
         <IconButton
-          aria-label="back"
-          color="inherit"
           onClick={handleHomeNavigate}
+          className='text-black'
         >
           <ArrowBackIosIcon />
         </IconButton>
@@ -122,15 +123,22 @@ export const RoutineCreate: React.FC = () => {
           />
         </div>
 
-        <div className='w-full mb-10 flex items-center mobile:block p-4'>
-          <div className='flex items-center border border-solid border-2px border-subColor4 rounded-xl p-1 mr-2 mobile:mr-0'>
+        <div className='w-full mb-10 flex justify-center items-center mobile:block p-4'>
+          <div className='flex  items-center border border-solid border-2px border-subColor4 rounded-xl p-1 mr-2 mobile:mr-0'>
             <ReactDatePicker
               selected={startDate}
               onChange={(date) => handleDateRangeChange([date, endDate])}
               dateFormat="yyyy년 MM월 dd일"
-              className='text-center'
+              open={startDatePickerOpen}
+              onClickOutside={() => setStartDatePickerOpen(false)}
+              onFocus={() => setStartDatePickerOpen(true)}
+              className="text-center "
+              minDate={new Date()}
             />
-            <CalendarMonthIcon className="text-mainYellow ml-2"/>
+            <CalendarMonthIcon
+              className="text-mainYellow ml-2"
+              onClick={() => setStartDatePickerOpen(true)}
+            />
           </div>
 
           <PiTildeBold className='m-2' />
@@ -138,11 +146,18 @@ export const RoutineCreate: React.FC = () => {
           <div className='flex items-center border border-solid border-2px border-subColor4 rounded-xl p-1 text-center ml-2 mobile:ml-0'>
             <ReactDatePicker
               selected={endDate}
-              onChange={(dates) => handleDateRangeChange([startDate, dates])}
+              onChange={(date) => handleDateRangeChange([startDate, date])}
               dateFormat="yyyy년 MM월 dd일"
-              className='text-center'
+              className='text-center '
+              open={endDatePickerOpen}
+              onClickOutside={() => setEndDatePickerOpen(false)}
+              onFocus={() => setEndDatePickerOpen(true)}
+              minDate={new Date()}
             />
-            <CalendarMonthIcon className="text-mainYellow ml-2" />
+            <CalendarMonthIcon
+              className="text-mainYellow ml-2"
+              onClick={() => setEndDatePickerOpen(true)}
+            />
           </div>
         </div>
 
@@ -155,21 +170,21 @@ export const RoutineCreate: React.FC = () => {
           <div
             className='pr-4 text-mainYellow'>
             <TextField
-            id="standard-select-currency"
-            select
-            value={period}
-            onChange={handlePeriodChange}
-            variant="standard"
-          >
-            {periodOptions.map((option) => (
-              <MenuItem
-                key={option.value}
-                value={option.value}
-              >
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+              id="standard-select-currency"
+              select
+              value={period}
+              onChange={handlePeriodChange}
+              variant="standard"
+            >
+              {periodOptions.map((option) => (
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </div>
         </div>
 

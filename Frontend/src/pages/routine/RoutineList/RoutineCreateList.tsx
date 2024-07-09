@@ -100,6 +100,7 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
 
             <div className='ml-5 text-gray-400'>
               {routine.dateRange.map(date => date ? dayjs(date).format('YYYY-MM-DD') : 'N/A').join(' ~ ')}
+              <span className='ml-2'>[{routine.period}]</span>
             </div>
 
             {isEditing === routine.index && (
