@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import TodoList from './TodoList';
-import TodoCalendar from './TodoCalender';
+import TodoList from './feed/TodoList';
+import TodoCalendar from './calendar/TodoCalender';
 
 const MainContainer = styled.div`
   display: flex;

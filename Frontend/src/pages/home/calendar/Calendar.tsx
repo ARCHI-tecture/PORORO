@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
-import { useTodoListStore } from './todo';
+import { useTodoListStore } from '../todo';
 
 const days = ['월', '화', '수', '목', '금', '토', '일'];
 

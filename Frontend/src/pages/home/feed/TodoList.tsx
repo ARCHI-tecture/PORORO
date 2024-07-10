@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BsBoxFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import TodoItem from './TodoItem';
 import TodoCreate from './TodoCreate';
-import { useTodoListStore } from './todo';
-import { NewTodo } from './types';
+import { useTodoListStore } from '../todo';
+import { NewTodo } from '../types';
 
 const TodoListContainer = styled.div`
   display: flex;
@@ -43,6 +43,12 @@ interface TodoCategoryButtonProps {
   onClick: () => void;
 }
 
+interface Category {
+  id: number;
+  name: string;
+  color: string;
+}
+
 function TodoCategoryButton({
   title,
   color,
@@ -60,23 +66,20 @@ function TodoCategoryButton({
 }
 
 function TodoList() {
-  const categories = [
-    {
-      id: 1,
-      name: '공부',
-      color: '#5F8B58',
-    },
-    {
-      id: 2,
-      name: '루틴',
-      color: '#B79698',
-    },
-    {
-      id: 3,
-      name: '체크리스트',
-      color: '#D5A491',
-    },
-  ];
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 카테고리 데이터 불러오기
+    const storedCategories = JSON.parse(
+      localStorage.getItem('categories') || '[]',
+    );
+    setCategories(storedCategories);
+  }, []);
+
+  const saveCategoriesToLocalStorage = (categories: Category[]) => {
+    // 로컬 스토리지에 카테고리 데이터 저장
+    localStorage.setItem('categories', JSON.stringify(categories));
+  };
 
   const [newTodo, setNewTodo] = useState<NewTodo>({
     selectedDate: '',
@@ -85,6 +88,18 @@ function TodoList() {
   const todoList = useTodoListStore((state) => state.todoList);
   const selectedDate = useTodoListStore((state) => state.selectedDate);
   const targetData = todoList.find((data) => data.date === selectedDate);
+
+  const addCategory = () => {
+    // 새로운 카테고리 추가 예시
+    const newCategory: Category = {
+      id: categories.length + 1,
+      name: '새로운 카테고리',
+      color: '#000000',
+    };
+    const updatedCategories = [...categories, newCategory];
+    setCategories(updatedCategories);
+    saveCategoriesToLocalStorage(updatedCategories);
+  };
 
   const addTodo = (date: string, cateId: number) => {
     setNewTodo({ selectedDate: date, cateId });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { keyframes, styled } from 'styled-components';
-import { useTodoListStore } from './todo';
-import { NewTodo } from './types';
+import { useTodoListStore } from '../todo';
+import { NewTodo } from '../types';
 
 const fadeIn = keyframes`
   from {
