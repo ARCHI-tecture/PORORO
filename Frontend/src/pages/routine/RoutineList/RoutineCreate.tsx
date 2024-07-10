@@ -152,7 +152,7 @@ export const RoutineCreate: React.FC = () => {
               open={endDatePickerOpen}
               onClickOutside={() => setEndDatePickerOpen(false)}
               onFocus={() => setEndDatePickerOpen(true)}
-              minDate={new Date()}
+              minDate={startDate || new Date()}
             />
             <CalendarMonthIcon
               className="text-mainYellow ml-2"
