@@ -130,6 +130,7 @@ export const RoutineCreate: React.FC = () => {
               onChange={(date) => handleDateRangeChange([date, endDate])}
               dateFormat="yyyy년 MM월 dd일"
               open={startDatePickerOpen}
+              shouldCloseOnSelect={!startDatePickerOpen}
               onClickOutside={() => setStartDatePickerOpen(false)}
               onFocus={() => setStartDatePickerOpen(true)}
               className="text-center "

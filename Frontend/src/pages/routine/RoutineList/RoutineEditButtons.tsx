@@ -43,9 +43,9 @@ export const RoutineEditButtons: React.FC<RoutineEditButtonsProps> = ({
   return (
     <>
       {isEditing ? (
-        <div className=' space-x-2'>
-          <IconButton onClick={handleSaveClick}><CheckIcon /></IconButton>
-          <IconButton onClick={handleCancelClick}><CloseIcon /></IconButton>
+        <div className='space-x-2 text-center space-y-2 '>
+          <IconButton onClick={handleSaveClick} className='mobile:p-0 mt-1 sm:mb-1 '><CheckIcon/></IconButton>
+          <IconButton onClick={handleCancelClick} className='mobile:p-0 sm: pt-1  '><CloseIcon /></IconButton>
         </div>
       ) : (
         <IconButton onClick={handleEditClick}>

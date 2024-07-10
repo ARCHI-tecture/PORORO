@@ -71,12 +71,15 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
       {localRoutine.length > 0 ? (
         localRoutine.map((routine, index) => (
           <div key={index}>
-            <div className='inline-flex justify-between items-center w-full '>
+            <div className='inline-flex justify-between items-center w-full
+                              md:max-w-lg
+                              mobile:md:max-w-mobile'>
               <div
                 style={{ borderColor: categoryColor }}
                 className='border-2 border-solid p-2 m-2 rounded-full inline-block'>
               </div>
-              <div className='text-center m-2 text-lg font-extrabold'>
+              <div className=' m-2 text-lg font-extrabold
+                              mobile:text-left w-40 break-words text-left'>
                 {routine.routineName}
               </div>
 
@@ -100,7 +103,7 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
 
             <div className='ml-5 text-gray-400'>
               {routine.dateRange.map(date => date ? dayjs(date).format('YYYY-MM-DD') : 'N/A').join(' ~ ')}
-              <span className='ml-2'>[{routine.period}]</span>
+              <span className='ml-2 mobile:block lg:inline'>[{routine.period}]</span>
             </div>
 
             {isEditing === routine.index && (
