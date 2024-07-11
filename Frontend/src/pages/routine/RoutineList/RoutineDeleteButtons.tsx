@@ -2,16 +2,16 @@ import React from 'react';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { RoutineType } from '../RoutineType';
 
+//CreateList에서 받아오는 props
 interface RoutineDeleteButtonsProps {
   idToDelete: number;
   localRoutine: RoutineType[];
   setLocalRoutine: React.Dispatch<React.SetStateAction<RoutineType[]>>;
-  categoryIndex: number; // 카테고리 인덱스 추가
+  categoryIndex: number;
 }
 
 export const RoutineDeleteButtons: React.FC<RoutineDeleteButtonsProps> = ({
   idToDelete,
-  localRoutine,
   setLocalRoutine,
   categoryIndex,
 }) => {

@@ -15,38 +15,22 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
 
   // 루틴 이름을 업데이트하는 코드입니다
   const handleUpdateRoutineName = (routineIndex: number, newRoutineName: string) => {
-    console.log('업데이트전', localRoutine);
-
-    // 새로운 상태를 업데이트하기 위해 현재 localRoutine을 복제합니다.
     const updatedRoutines = localRoutine.map((routine) =>
       routine.index === routineIndex ? { ...routine, routineName: newRoutineName } : routine
     );
-
-    // 로컬 스토리지에서 기존 데이터를 가져옵니다.
     const routineDataString = localStorage.getItem('routineData');
     if (routineDataString) {
       try {
-        // 기존 데이터를 파싱합니다.
         const parsedRoutine: RoutineType[] = JSON.parse(routineDataString);
-
-        // 업데이트할 루틴의 인덱스를 찾습니다.
         const indexToUpdate = parsedRoutine.findIndex((routine) => routine.index === routineIndex);
-
-        // 새로운 데이터로 업데이트합니다.
         if (indexToUpdate !== -1) {
           parsedRoutine[indexToUpdate].routineName = newRoutineName;
         }
-
-        // 로컬 스토리지에 업데이트된 데이터를 반영합니다.
         localStorage.setItem('routineData', JSON.stringify(parsedRoutine));
       } catch (error) {
         console.error('Error updating routine data:', error);
       }
     }
-
-    console.log('업데이트후', updatedRoutines);
-
-    // 상태를 업데이트합니다.
     setLocalRoutine(updatedRoutines);
   };
 
@@ -56,8 +40,6 @@ export const RoutineCreateList: React.FC<RoutineCreateListProps> = ({ categoryIn
       const routineDatas = localStorage.getItem('routineData');
       if (routineDatas) {
         const parsedRoutine: RoutineType[] = JSON.parse(routineDatas);
-
-        // 현재 카테고리에 속하는 루틴만 필터링합니다.
         const filtered = parsedRoutine.filter(routine => routine.id === categoryIndex);
         setLocalRoutine(filtered);
       }

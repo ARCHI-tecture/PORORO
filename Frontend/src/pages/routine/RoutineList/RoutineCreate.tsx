@@ -10,7 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { IconButton } from '@mui/material';
 import { PiTildeBold } from "react-icons/pi";
-import dayjs from 'dayjs';
 
 
 export const RoutineCreate: React.FC = () => {
@@ -34,7 +33,7 @@ export const RoutineCreate: React.FC = () => {
 
   const [routineName, setRoutineName] = useState<string>('');
   const [period, setPeriod] = useState<string>('매일');
-
+  //데이터에 index라는 번호를 추가해 고유의 번호를 부여(id는 카테고리인덱스와 연결하면서 이미 사용중)
   const [index, setIndex] = useState<number>(() => {
     const existingData = localStorage.getItem('routineData');
     if (existingData) {
@@ -47,7 +46,7 @@ export const RoutineCreate: React.FC = () => {
         console.error('기존 데이터 파싱 중 오류 발생:', error);
       }
     }
-    return 1;
+    return 1;//인덱스 시작 번호
   });
 
   const handleRoutineNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,10 +75,9 @@ export const RoutineCreate: React.FC = () => {
       dateRange: [startDate, endDate],
       period,
     };
-    console.log('루틴데이터는 뭐가잇냐면',routineData);
+
     const existingData = localStorage.getItem('routineData');
     let updatedData = [];
-
     if (existingData) {
       try {
         updatedData = JSON.parse(existingData);
