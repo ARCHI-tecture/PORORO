@@ -18,7 +18,7 @@ const RecordMain: React.FC = () => {
       >
         <ArrowBackIosIcon />
       </IconButton>
-      <Grid className="w-screen flex flex-col items-center md:items-stretch md:ml-5 pr-3">
+      <Grid className="w-screen flex flex-col items-center md:items-stretch xl:items-center md:ml-5 pr-3">
         <RecordTime />
         <TimeTable />
       </Grid>
