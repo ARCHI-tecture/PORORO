@@ -66,7 +66,7 @@ const TimeTable: React.FC = () => {
           `${date.split('-')[1]}월 ${date.split('-')[2]}일` &&
         parseInt(table.time.split('-')[0].split(':')[0]) <=
           parseInt(hour.split(':')[0]) &&
-        parseInt(table.time.split('-')[0].split(':')[0]) + 2 >=
+        parseInt(table.time.split('-')[0].split(':')[0]) + 1 >=
           parseInt(hour.split(':')[0]),
     );
 
