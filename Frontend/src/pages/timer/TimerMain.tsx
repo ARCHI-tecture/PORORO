@@ -4,34 +4,31 @@ import PomodoroTimer from './PomodoroTimer';
 import { Grid } from '@mui/material';
 
 const TimerMain: React.FC = () => {
-  const [wallpaper, setWallpaper] = useState<string | null>(null);
+  const [backgroundStyle, setBackgroundStyle] = useState<React.CSSProperties>(
+    {},
+  );
 
   useEffect(() => {
-    const savedWallpaper = localStorage.getItem('wallpaper');
-    setWallpaper(savedWallpaper);
+    const bgOption = localStorage.getItem('bgOption');
+    const bgValue = localStorage.getItem('bgValue');
+
+    if (bgOption === 'none' || bgOption === 'white' || bgOption === 'dark') {
+      setBackgroundStyle({
+        backgroundColor: bgValue || '#ffffff',
+        minHeight: '100vh',
+      });
+    } else if (bgOption === 'image') {
+      setBackgroundStyle({
+        backgroundImage: `url(${bgValue})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '100vh',
+      });
+    }
   }, []);
 
-  const getBackgroundStyle = () => {
-    switch (wallpaper) {
-      case 'none':
-        return { backgroundColor: '#f3f4f6' }; // gray-100
-      case 'white':
-        return { backgroundColor: '#ffffff' }; // white
-      case 'dark':
-        return { backgroundColor: '#1f2937' }; // gray-800
-      default:
-        return wallpaper
-          ? {
-              backgroundImage: `url(${wallpaper})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }
-          : {};
-    }
-  };
-
   return (
-    <div className={`min-h-screen ${getBackgroundStyle()}`}>
+    <div style={backgroundStyle}>
       <Grid className="container flex flex-col items-center w-screen p-6">
         <TimerHeader />
         <PomodoroTimer workDuration={3} breakDuration={2} />
