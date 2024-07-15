@@ -31,7 +31,7 @@ const TimerMain: React.FC = () => {
     <div style={backgroundStyle}>
       <Grid className="container flex flex-col items-center w-screen p-6">
         <TimerHeader />
-        <PomodoroTimer workDuration={3} breakDuration={2} />
+        <PomodoroTimer workDuration={5 * 60} breakDuration={2} />
       </Grid>
     </div>
   );
