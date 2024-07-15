@@ -13,11 +13,11 @@ const TimeTable: React.FC = () => {
   const tableCellStyle = 'w-20 border border-gray-300 min-w-5';
 
   const hourData = [
-    '0:00',
-    '2:00',
-    '4:00',
-    '6:00',
-    '8:00',
+    '00:00',
+    '02:00',
+    '04:00',
+    '06:00',
+    '08:00',
     '10:00',
     '12:00',
     '14:00',
@@ -48,18 +48,48 @@ const TimeTable: React.FC = () => {
       const parts = formatter.formatToParts(date);
       const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value}T${parts[6].value}:${parts[8].value}:${parts[10].value}+09:00`;
 
-      console.log(formattedDate.split('T')[0]);
       dateData.push(formattedDate.split('T')[0]);
     }
 
     setDates(dateData);
   };
 
+  const loadTimeTableData = () => {
+    const storedData = localStorage.getItem('timeTable');
+    return storedData ? JSON.parse(storedData) : [];
+  };
+
+  const isTimeInRange = (date: string, hour: string) => {
+    const record = timeTableData.find(
+      (table: any) =>
+        `${table.date.split('-')[1]}월 ${table.date.split('-')[2]}일` ===
+          `${date.split('-')[1]}월 ${date.split('-')[2]}일` &&
+        parseInt(table.time.split('-')[0].split(':')[0]) <=
+          parseInt(hour.split(':')[0]) &&
+        parseInt(table.time.split('-')[0].split(':')[0]) + 1 >=
+          parseInt(hour.split(':')[0]),
+    );
+
+    return !!record;
+  };
+
   useEffect(() => {
     getLastTwoWeeks();
+    setTimeTableData(loadTimeTableData());
+    const timetb = [
+      { date: '24-07-11', time: '11:00-11:25' },
+      { date: '24-07-10', time: '12:00-12:25' },
+      { date: '24-07-01', time: '18:00-18:25' },
+      { date: '24-07-02', time: '13:00-13:25' },
+      { date: '24-07-12', time: '11:50-12:15' },
+      { date: '24-07-12', time: '13:00-13:25' },
+    ]; // 임시 데이터
+
+    localStorage.setItem('timeTable', JSON.stringify(timetb));
   }, []);
 
   const [dates, setDates] = useState([]);
+  const [timeTableData, setTimeTableData] = useState(loadTimeTableData());
 
   return (
     <Grid className="w-full shadow-md pt-5 pl-2 pb-5 mb-5 rounded-md max-w-384">
@@ -72,10 +102,7 @@ const TimeTable: React.FC = () => {
                 <TableCell className="border-none"></TableCell>
                 {hourData.map((time: string, index: number) => (
                   <>
-                    <TableCell
-                      className="table-cell md:hidden border-none p-0"
-                      key={index}
-                    >
+                    <TableCell className="table-cell md:hidden border-none p-0">
                       <Typography className="text-xs -ml-7">
                         {parseInt(time.split(':')[0]) % 4 === 0 && time}
                       </Typography>
@@ -94,22 +121,21 @@ const TimeTable: React.FC = () => {
                         ? `${date.split('-')[1]}월 ${date.split('-')[2]}일`
                         : `${date.split('-')[1]}월 ${date.split('-')[2]}일`}
                     </Typography>
-                    <TableCell className={`${tableCellStyle} `}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell className={tableCellStyle}></TableCell>
-                    <TableCell
-                      className={`${tableCellStyle} hidden md:table-cell `}
-                    ></TableCell>
-                    <TableCell
-                      className={`${tableCellStyle} hidden md:table-cell`}
-                    ></TableCell>
+                    {hourData.map((hour, index) => {
+                      isTimeInRange(date, hour);
+                      return (
+                        <TableCell
+                          className={`${tableCellStyle} ${
+                            index === 10 || index === 11
+                              ? 'hidden md:table-cell'
+                              : ''
+                          } // ${
+                            isTimeInRange(date, hour) ? 'bg-blue-500' : ''
+                          }`}
+                          key={index}
+                        ></TableCell>
+                      );
+                    })}
                   </TableRow>
                 </>
               ))}
