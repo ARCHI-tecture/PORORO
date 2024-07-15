@@ -21,8 +21,8 @@ const theme = createTheme({
       mainYellow: { main: '#FFD812' },
       mainBlue: { main: '#2C4493' },
       mainOrange: { main: '#EE7005' },
-      // subColor3: { main: '#654039' },
-      // subColor4: { main: '#817F82' },
+      subColor3: { main: '#654039' },
+      subColor4: { main: '#817F82' },
     },
   } as PaletteOptions,
 });

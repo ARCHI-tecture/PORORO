@@ -15,7 +15,7 @@ const RoutineMain: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-center items-center p-4">
-  <div className='flex items-center w-full max-w-screen-md py-10'>
+  <div className='flex items-center w-[calc(100%-40px)] max-w-screen-md py-10'>
     <IconButton
       aria-label="back"
       color="inherit"
