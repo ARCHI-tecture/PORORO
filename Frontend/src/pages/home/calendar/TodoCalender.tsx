@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { MdArrowBackIos, MdArrowForwardIos, MdCheckBox } from 'react-icons/md';
 import { IoHeart } from 'react-icons/io5';
 import Calendar from './Calendar';
@@ -38,6 +38,14 @@ const CalendarArrow = styled.div`
   cursor: pointer;
 `;
 
+const TodoCalendarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 좌측 정렬 */
+  width: 100%;
+  padding: 16px; /* 위쪽과 왼쪽에 여백 추가 */
+`;
+
 function TodoCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -58,7 +66,7 @@ function TodoCalendar() {
   const text = `${year}년 ${month}월`;
 
   return (
-    <>
+    <TodoCalendarContainer>
       <CalendarHeadContainer>
         <CalendarInfo>
           <CalendarDate>{text}</CalendarDate>
@@ -77,7 +85,7 @@ function TodoCalendar() {
         </CalendarArrow>
       </CalendarHeadContainer>
       <Calendar currentDate={currentDate} />
-    </>
+    </TodoCalendarContainer>
   );
 }
 
