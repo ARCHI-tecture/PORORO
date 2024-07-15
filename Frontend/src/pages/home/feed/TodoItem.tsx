@@ -1,7 +1,12 @@
-import React from 'react';
-import { styled } from 'styled-components';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useTodoListStore, TodoItemModel } from '../todo';
+import { IconButton, TextField } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { FaCheck } from 'react-icons/fa';
-import { useTodoListStore } from '../todo';
 
 const TodoItemContainer = styled.div`
   display: inline-flex;
@@ -10,7 +15,7 @@ const TodoItemContainer = styled.div`
   padding: 4px;
 `;
 
-const CheckBox = styled.div<{ done: boolean }>`
+const CheckBox = styled.div<{ done: boolean; color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,29 +32,93 @@ const Text = styled.div`
   flex: 1;
   color: #000;
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;
 
 interface TodoItemProps {
   id: string;
+  text: string;
   done: boolean;
   color: string;
-  text: string;
+  onEdit: (id: string, text: string, cateId: number) => void;
+  onDelete: (id: string) => void;
+  editingId: string | null;
+  editingText: string;
+  onSave: (id: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  cateId: number;
 }
 
-function TodoItem({ id, done, color, text }: TodoItemProps) {
+const TodoItem: React.FC<TodoItemProps> = ({
+  id,
+  text,
+  done,
+  color,
+  onEdit,
+  onDelete,
+  editingId,
+  editingText,
+  onSave,
+  onChange,
+  cateId,
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
   const toggleTodo = useTodoListStore((state) => state.toggleTodo);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    onEdit(id, text, cateId);
+  };
+
+  const handleSaveClick = () => {
+    onSave(id);
+    setIsEditing(false);
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+  };
+
   const onToggle = () => toggleTodo(id);
+
   return (
     <TodoItemContainer>
       <CheckBox done={done} color={color} onClick={onToggle}>
         {done && <FaCheck />}
       </CheckBox>
-      <Text>{text}</Text>
+      {isEditing ? (
+        <TextField
+          value={editingText}
+          onChange={onChange}
+          variant="standard"
+          fullWidth
+        />
+      ) : (
+        <Text>{text}</Text>
+      )}
+      <div>
+        {isEditing ? (
+          <>
+            <IconButton onClick={handleSaveClick}>
+              <SaveIcon />
+            </IconButton>
+            <IconButton onClick={handleCancelClick}>
+              <CancelIcon />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={handleEditClick}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => onDelete(id)}>
+              <DeleteIcon />
+            </IconButton>
+          </>
+        )}
+      </div>
     </TodoItemContainer>
   );
-}
+};
 
-export default React.memo(TodoItem);
+export default TodoItem;

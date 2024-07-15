@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import TodoList from './feed/TodoList';
 import TodoCalendar from './calendar/TodoCalender';
-import TodoinCategory from './category/TodoinCategory';
 
 const MainContainer = styled.div`
   display: flex;
@@ -16,7 +15,6 @@ const MainHome: React.FC = () => {
     <MainContainer>
       <TodoCalendar />
       <TodoList />
-      {/* <TodoinCategory /> */}
     </MainContainer>
   );
 };

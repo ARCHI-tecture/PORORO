@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BsBoxFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import TodoItem from './TodoItem';
 import TodoCreate from './TodoCreate';
-import { useTodoListStore } from '../todo';
+import { useTodoListStore, TodoItemModel } from '../todo';
 import { NewTodo } from '../types';
 
 const TodoListContainer = styled.div`
@@ -24,11 +24,8 @@ const TodoCategoryBlock = styled.div`
   gap: 8px;
   border-radius: 21px;
   background: #f2f2f2;
-
   font-size: 16px;
-  font-style: normal;
   font-weight: 800;
-  line-height: normal;
   color: #d9d9d9;
   cursor: pointer;
 `;
@@ -60,84 +57,84 @@ function TodoCategoryButton({
 }
 
 function TodoList() {
-  // const categories = [
-  //   {
-  //     id: 1,
-  //     name: '공부',
-  //     color: '#5F8B58',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: '루틴',
-  //     color: '#B79698',
-  //   },
-  //   {
-  //     id: 3,
-  //     name: '체크리스트',
-  //     color: '#D5A491',
-  //   },
-  // ];
-
   const [newTodo, setNewTodo] = useState<NewTodo>({
     selectedDate: '',
     cateId: 0,
   });
+
   const todoList = useTodoListStore((state) => state.todoList);
   const selectedDate = useTodoListStore((state) => state.selectedDate);
   const targetData = todoList.find((data) => data.date === selectedDate);
 
-  // localStorage에서 데이터를 가져오고 JSON 파싱
   const categoryListStr = localStorage.getItem('categoryArr');
   const categoryList = categoryListStr ? JSON.parse(categoryListStr) : [];
-  console.log('카테고리 데이터:', categoryList);
 
-  // 루틴 데이터를 파싱하여 확인
-  // const routineListStr = localStorage.getItem('routineData');
-  // const routineList = routineListStr ? JSON.parse(routineListStr) : [];
-  // console.log('루틴데이터:', routineList);
+  const [editingData, setEditingData] = useState<{
+    id: string | null;
+    text: string;
+    cateId: number | null;
+  }>({ id: null, text: '', cateId: null });
 
   const addTodo = (date: string, cateId: number) => {
     setNewTodo({ selectedDate: date, cateId });
   };
 
-  return (
-    <>
-      <TodoListContainer>
-        {categoryList.map((category: any) => (
-          <React.Fragment key={category.id}>
-            {/* 카테고리 제목 */}
-            <TodoCategoryButton
-              onClick={() => addTodo(selectedDate, category.id)}
-              title={category.category}
-              color={category.color}
-            />
+  const handleDelete = (id: string) => {
+    useTodoListStore.getState().deleteTodo(id);
+  };
 
-            {/* 카테고리에 해당하는 투두리스트 */}
-            {targetData &&
-              targetData.todos
-                .filter((todo) => todo.cateId === category.id)
-                .map((todo) => (
-                  <TodoItem
-                    key={todo.id}
-                    id={todo.id}
-                    text={todo.text}
-                    done={todo.done}
-                    color={category.color}
-                  />
-                ))}
-            {/* 카테고리 제목에 해당하는 새로운 투두 만드는 input */}
-            {newTodo.selectedDate === selectedDate &&
-              newTodo.cateId === category.id && (
-                <TodoCreate
-                  newTodo={newTodo}
-                  setNewTodo={setNewTodo}
+  const handleEdit = (id: string, text: string, cateId: number) => {
+    setEditingData({ id, text, cateId });
+  };
+
+  const handleSave = (id: string) => {
+    useTodoListStore.getState().saveTodo(id, editingData.text);
+    setEditingData({ id: null, text: '', cateId: null });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditingData((prev) => ({ ...prev, text: e.target.value }));
+  };
+
+  return (
+    <TodoListContainer>
+      {categoryList.map((category: any) => (
+        <React.Fragment key={category.id}>
+          <TodoCategoryButton
+            onClick={() => addTodo(selectedDate, category.id)}
+            title={category.category}
+            color={category.color}
+          />
+          {targetData &&
+            targetData.todos
+              .filter((todo) => todo.cateId === category.id)
+              .map((todo: TodoItemModel) => (
+                <TodoItem
+                  key={todo.id}
+                  id={todo.id}
+                  text={todo.text}
+                  done={todo.done}
                   color={category.color}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  editingId={editingData.id}
+                  editingText={editingData.text}
+                  onSave={handleSave}
+                  onChange={handleChange}
+                  cateId={category.id} // 추가된 부분
                 />
-              )}
-          </React.Fragment>
-        ))}
-      </TodoListContainer>
-    </>
+              ))}
+          {newTodo.selectedDate === selectedDate &&
+            newTodo.cateId === category.id && (
+              <TodoCreate
+                newTodo={newTodo}
+                setNewTodo={setNewTodo}
+                color={category.color}
+              />
+            )}
+        </React.Fragment>
+      ))}
+    </TodoListContainer>
   );
 }
 
