@@ -9,3 +9,7 @@ export interface NewTodo {
   selectedDate: string;
   cateId: number;
 }
+
+export interface CalendarProps {
+  currentDate: Date;
+}
