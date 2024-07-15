@@ -11,6 +11,8 @@ const TodoListContainer = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 24px;
+  width: 100%; /* 전체 너비 사용 */
+  align-items: flex-start; /* 좌측 정렬 */
 `;
 
 const TodoCategoryContainer = styled.div`
@@ -121,7 +123,7 @@ function TodoList() {
                   editingText={editingData.text}
                   onSave={handleSave}
                   onChange={handleChange}
-                  cateId={category.id} // 추가된 부분
+                  cateId={category.id}
                 />
               ))}
           {newTodo.selectedDate === selectedDate &&
