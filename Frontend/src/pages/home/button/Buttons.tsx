@@ -32,12 +32,12 @@ const Buttons: React.FC = () => {
   };
 
   const handleCategory = () => {
-    console.log('Option 1 clicked');
+    navigate('/category');
     handleClose();
   };
 
   const handleRoutine = () => {
-    console.log('Option 2 clicked');
+    navigate('/routine');
     handleClose();
   };
 
