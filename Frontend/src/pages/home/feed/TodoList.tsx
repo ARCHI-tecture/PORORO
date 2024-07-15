@@ -11,6 +11,7 @@ const TodoListContainer = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 24px;
+  margin-top: 23px;
   width: 100%; /* 전체 너비 사용 */
   align-items: flex-start; /* 좌측 정렬 */
 `;

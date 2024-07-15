@@ -41,9 +41,9 @@ const CalendarArrow = styled.div`
 const TodoCalendarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 좌측 정렬 */
+  align-items: flex-start;
   width: 100%;
-  padding: 16px; /* 위쪽과 왼쪽에 여백 추가 */
+  padding: 16px;
 `;
 
 function TodoCalendar() {
@@ -60,7 +60,6 @@ function TodoCalendar() {
     nextMonth.setMonth(nextMonth.getMonth() + 1);
     setCurrentDate(nextMonth);
   };
-
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const text = `${year}년 ${month}월`;

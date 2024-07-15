@@ -2,14 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import TodoList from './feed/TodoList';
 import TodoCalendar from './calendar/TodoCalender';
+import Buttons from './button/Buttons';
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start; /* 좌측 정렬 */
-  gap: 10px; /* 간격 줄이기 */
-  width: 100%; /* 전체 너비 사용 */
-  padding: 16px; /* 여백 추가 */
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
 `;
 
 const MainHome: React.FC = () => {
@@ -17,6 +18,7 @@ const MainHome: React.FC = () => {
     <MainContainer>
       <TodoCalendar />
       <TodoList />
+      <Buttons />
     </MainContainer>
   );
 };
