@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useTodoListStore, TodoItemModel } from '../todo';
-import { IconButton, TextField } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { useTodoListStore } from '../todo';
+import { IconButton } from '@mui/material';
+import TimerIcon from '@mui/icons-material/Timer';
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
 import { FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // 추가된 부분
+import TodoModal from './ButtonModal';
 
 const TodoItemContainer = styled.div`
   display: inline-flex;
@@ -56,68 +56,56 @@ const TodoItem: React.FC<TodoItemProps> = ({
   color,
   onEdit,
   onDelete,
-  editingId,
   editingText,
   onSave,
   onChange,
   cateId,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const toggleTodo = useTodoListStore((state) => state.toggleTodo);
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-    onEdit(id, text, cateId);
-  };
-
-  const handleSaveClick = () => {
-    onSave(id);
-    setIsEditing(false);
-  };
-
-  const handleCancelClick = () => {
-    setIsEditing(false);
-  };
 
   const onToggle = () => toggleTodo(id);
 
+  const handleOpenModal = () => {
+    onEdit(id, text, cateId);
+    setOpen(true);
+  };
+
+  const handleTimerClick = () => {
+    navigate('/pomodoro'); // Navigate to the timer screen
+  };
+
   return (
-    <TodoItemContainer>
-      <CheckBox done={done} color={color} onClick={onToggle}>
-        {done && <FaCheck />}
-      </CheckBox>
-      {isEditing ? (
-        <TextField
-          value={editingText}
-          onChange={onChange}
-          variant="standard"
-          fullWidth
-        />
-      ) : (
+    <>
+      <TodoItemContainer>
+        <CheckBox done={done} color={color} onClick={onToggle}>
+          {done && <FaCheck />}
+        </CheckBox>
         <Text>{text}</Text>
-      )}
-      <div>
-        {isEditing ? (
-          <>
-            <IconButton onClick={handleSaveClick}>
-              <SaveIcon />
-            </IconButton>
-            <IconButton onClick={handleCancelClick}>
-              <CancelIcon />
-            </IconButton>
-          </>
-        ) : (
-          <>
-            <IconButton onClick={handleEditClick}>
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={() => onDelete(id)}>
-              <DeleteIcon />
-            </IconButton>
-          </>
-        )}
-      </div>
-    </TodoItemContainer>
+        <div onClick={handleTimerClick}>
+          <TimerIcon />
+        </div>
+        <IconButton onClick={handleOpenModal}>
+          <LinearScaleIcon />
+        </IconButton>
+      </TodoItemContainer>
+
+      <TodoModal
+        open={open}
+        onClose={() => setOpen(false)}
+        editingText={editingText}
+        onChange={onChange}
+        onSave={() => {
+          onSave(id);
+          setOpen(false);
+        }}
+        onDelete={() => {
+          onDelete(id);
+          setOpen(false);
+        }}
+      />
+    </>
   );
 };
 

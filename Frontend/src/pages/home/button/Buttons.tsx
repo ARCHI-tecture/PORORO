@@ -20,7 +20,7 @@ const Buttons: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const handleTimerClick = () => {
-    navigate('/pomodoro'); // Navigate to the timer screen
+    navigate('/record');
   };
 
   const handleOpen = () => {
