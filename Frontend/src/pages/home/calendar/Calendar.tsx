@@ -11,7 +11,8 @@ const CalendarContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 12px;
-  width: 50vw;
+  width: 100%;
+  max-width: 600px; // 최대 너비를 설정하여 화면 크기에 맞게 조정
   overflow-x: hidden;
 `;
 
