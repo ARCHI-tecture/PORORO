@@ -53,7 +53,7 @@ const ButtonModal: React.FC<TodoModalProps> = ({
           <Button
             startIcon={<DeleteIcon />}
             onClick={onDelete}
-            color="error"
+            color="secondary"
             variant="contained"
           >
             삭제하기
