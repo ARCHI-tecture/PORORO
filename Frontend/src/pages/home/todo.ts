@@ -1,3 +1,5 @@
+// ./src/todo.ts
+
 import { create } from 'zustand';
 import uuid from 'react-uuid';
 import { todoData } from './data';
@@ -21,6 +23,8 @@ type TodoListStore = {
   addTodo: (todo: Omit<TodoItemModel, 'id' | 'done'>) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
+  editTodo: (id: string, newText: string) => void;
+  saveTodo: (id: string, newText: string) => void;
 };
 
 export const useTodoListStore = create<TodoListStore>((set) => ({
@@ -80,4 +84,24 @@ export const useTodoListStore = create<TodoListStore>((set) => ({
       });
       return { ...state, todoList: updatedTodos };
     }),
+  editTodo: (id, newText) =>
+    set((state) => ({
+      ...state,
+      todoList: state.todoList.map((data) => ({
+        ...data,
+        todos: data.todos.map((todo) =>
+          todo.id === id ? { ...todo, text: newText } : todo,
+        ),
+      })),
+    })),
+  saveTodo: (id, newText) =>
+    set((state) => ({
+      ...state,
+      todoList: state.todoList.map((data) => ({
+        ...data,
+        todos: data.todos.map((todo) =>
+          todo.id === id ? { ...todo, text: newText } : todo,
+        ),
+      })),
+    })),
 }));

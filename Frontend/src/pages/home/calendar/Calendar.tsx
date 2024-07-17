@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
-import { useTodoListStore } from './todo';
+import { useTodoListStore } from '../todo';
+import { CalendarProps } from '../types';
 
 const days = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -10,8 +11,9 @@ const CalendarContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 12px;
-  width: 50vw; /* 화면 너비의 절반으로 설정 */
-  overflow-x: hidden; /* 가로로 넘치는 부분을 숨김 */
+  width: 100%;
+  max-width: 600px; // 최대 너비를 설정하여 화면 크기에 맞게 조정
+  overflow-x: hidden;
 `;
 
 const CalendarDay = styled.div`
@@ -21,9 +23,7 @@ const CalendarDay = styled.div`
   padding: 10px;
   color: #525252;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   text-align: center;
 `;
 
@@ -50,14 +50,10 @@ const TodoDayCheck = styled.div<{ $colored: boolean }>`
   border-radius: 32%;
   cursor: pointer;
   background-color: ${(props) => (props.$colored ? '#5F8B58' : '#D9D9D9')};
-
   color: #fff;
   text-align: center;
-
   font-size: 16px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const TodoDayDate = styled.div<{ selected: boolean }>`
@@ -68,9 +64,7 @@ const TodoDayDate = styled.div<{ selected: boolean }>`
   height: 28px;
   text-align: center;
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   border-radius: 14px;
   color: ${(props) => (props.selected ? '#FFF' : '#000')};
   background-color: ${(props) => (props.selected ? '#5983FC' : '#FFF')};
@@ -111,9 +105,8 @@ function TodoDay({ fullDate, date, remains, length }: CalendarDate) {
   );
 }
 
-function Calendar() {
+const Calendar: React.FC<CalendarProps> = ({ currentDate }) => {
   const todoList = useTodoListStore((state) => state.todoList);
-  const currentDate = new Date();
   const firstDay = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
@@ -140,7 +133,6 @@ function Calendar() {
 
       let remains = 0;
       let length = 0;
-      // TODO: targetTodos.todos.length > 0
       if (targetTodos) {
         remains = targetTodos.todos.filter((todo) => !todo.done).length;
         length = targetTodos.todos.length;
@@ -148,7 +140,7 @@ function Calendar() {
       calendarDates.push({
         fullDate: dateString,
         date: i.toString(),
-        remains, // TODO: null 이면 숫자 X
+        remains,
         length,
       });
     } else {
@@ -181,6 +173,6 @@ function Calendar() {
       </CalendarGrid>
     </CalendarContainer>
   );
-}
+};
 
 export default React.memo(Calendar);

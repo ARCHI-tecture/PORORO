@@ -1,5 +1,5 @@
-import React from 'react';
-import { styled } from 'styled-components';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import { MdArrowBackIos, MdArrowForwardIos, MdCheckBox } from 'react-icons/md';
 import { IoHeart } from 'react-icons/io5';
 import Calendar from './Calendar';
@@ -20,9 +20,7 @@ const CalendarInfo = styled.div`
 const CalendarDate = styled.p`
   color: #000;
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const CalendarDone = styled.div`
@@ -30,24 +28,44 @@ const CalendarDone = styled.div`
   align-items: center;
   color: #000;
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const CalendarArrow = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 13px;
+  cursor: pointer;
+`;
+
+const TodoCalendarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 16px;
 `;
 
 function TodoCalendar() {
-  const currentDate = new Date();
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handlePrevMonth = () => {
+    const prevMonth = new Date(currentDate);
+    prevMonth.setMonth(prevMonth.getMonth() - 1);
+    setCurrentDate(prevMonth);
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = new Date(currentDate);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    setCurrentDate(nextMonth);
+  };
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const text = `${year}년 ${month}월`;
+
   return (
-    <>
+    <TodoCalendarContainer>
       <CalendarHeadContainer>
         <CalendarInfo>
           <CalendarDate>{text}</CalendarDate>
@@ -61,12 +79,12 @@ function TodoCalendar() {
           </CalendarDone>
         </CalendarInfo>
         <CalendarArrow>
-          <MdArrowBackIos />
-          <MdArrowForwardIos />
+          <MdArrowBackIos onClick={handlePrevMonth} />
+          <MdArrowForwardIos onClick={handleNextMonth} />
         </CalendarArrow>
       </CalendarHeadContainer>
-      <Calendar />
-    </>
+      <Calendar currentDate={currentDate} />
+    </TodoCalendarContainer>
   );
 }
 
