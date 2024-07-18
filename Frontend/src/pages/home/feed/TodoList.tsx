@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BsBoxFill, BsFillPlusCircleFill } from 'react-icons/bs';
 import TodoItem from './TodoItem';
 import TodoCreate from './TodoCreate';
 import { useTodoListStore, TodoItemModel } from '../todo';
-import { NewTodo } from '../types';
+import { NewTodo, Routine } from '../types';
 
 const TodoListContainer = styled.div`
   display: flex;
@@ -68,15 +68,47 @@ function TodoList() {
   const todoList = useTodoListStore((state) => state.todoList);
   const selectedDate = useTodoListStore((state) => state.selectedDate);
   const targetData = todoList.find((data) => data.date === selectedDate);
+  // const targetData = todoList.find(
+  //   (data) =>
+  //     `${data.date.split('.')[1].trim()}/${data.date.split('.')[2].trim()}/${
+  //       data.date.split('.')[0]
+  //     }` === selectedDate,
+  // );
 
+  //카테고리 로컬스토리지 불러오는 코드
   const categoryListStr = localStorage.getItem('categoryArr');
   const categoryList = categoryListStr ? JSON.parse(categoryListStr) : [];
+
+  //루틴 로컬스토리지 불러오는 코드
+  const routineListStr = localStorage.getItem('routineData');
+  const routineList = routineListStr ? JSON.parse(routineListStr) : [];
 
   const [editingData, setEditingData] = useState<{
     id: string | null;
     text: string;
     cateId: number | null;
   }>({ id: null, text: '', cateId: null });
+
+  useEffect(() => {
+    //루틴 로컬 스토리지에 dateRange 파싱하는 코드
+    const dateRange = JSON.parse(localStorage.getItem('dateRange') || '[]');
+    const startDate = new Date(dateRange.start);
+    const endDate = new Date(dateRange.end);
+
+    routineList.forEach((routine: Routine) => {
+      const routineDate = new Date(selectedDate);
+      if (routineDate >= startDate && routineDate <= endDate) {
+        if (
+          targetData &&
+          !targetData.todos.some((todo) => todo.cateId === routine.id)
+        ) {
+          useTodoListStore
+            .getState()
+            .addTodo(selectedDate, routine.id, routine.text);
+        }
+      }
+    });
+  }, [selectedDate, routineList, targetData]);
 
   const addTodo = (date: string, cateId: number) => {
     setNewTodo({ selectedDate: date, cateId });
@@ -102,8 +134,9 @@ function TodoList() {
   return (
     <TodoListContainer>
       {categoryList.map((category: any) => (
-        <React.Fragment key={category.id}>
+        <React.Fragment>
           <TodoCategoryButton
+            key={category.id}
             onClick={() => addTodo(selectedDate, category.id)}
             title={category.category}
             color={category.color}
@@ -135,6 +168,9 @@ function TodoList() {
                 color={category.color}
               />
             )}
+          {/* {routineList.map((routine: any) => {
+            console.log(routine);
+          })} */}
         </React.Fragment>
       ))}
     </TodoListContainer>
