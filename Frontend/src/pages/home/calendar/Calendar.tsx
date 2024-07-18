@@ -127,39 +127,37 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate }) => {
     0,
   );
   const firstDayOfWeek = firstDay.getDay();
+  const leadingEmptyDays = (firstDayOfWeek + 6) % 7; // 월요일 시작으로 맞추기 위해 +6 후 % 7
 
   const calendarDates: CalendarDate[] = [];
 
-  for (let i = 2 - firstDayOfWeek; i <= lastDay.getDate(); i += 1) {
-    if (i > 0) {
-      const date = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        i,
-      );
-      const dateString = date.toLocaleDateString();
-      const targetTodos = todoList.find((todo) => todo.date === dateString);
+  // 첫 주의 빈 네모 박스를 채우기 위한 루프
+  for (let i = 0; i < leadingEmptyDays; i++) {
+    calendarDates.push({
+      fullDate: '',
+      date: null,
+      remains: 0,
+      length: 0,
+    });
+  }
 
-      let remains = 0;
-      let length = 0;
-      if (targetTodos) {
-        remains = targetTodos.todos.filter((todo) => !todo.done).length;
-        length = targetTodos.todos.length;
-      }
-      calendarDates.push({
-        fullDate: dateString,
-        date: i.toString(),
-        remains,
-        length,
-      });
-    } else {
-      calendarDates.push({
-        fullDate: '',
-        date: null,
-        remains: 0,
-        length: 0,
-      });
+  for (let i = 1; i <= lastDay.getDate(); i += 1) {
+    const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+    const dateString = date.toLocaleDateString();
+    const targetTodos = todoList.find((todo) => todo.date === dateString);
+
+    let remains = 0;
+    let length = 0;
+    if (targetTodos) {
+      remains = targetTodos.todos.filter((todo) => !todo.done).length;
+      length = targetTodos.todos.length;
     }
+    calendarDates.push({
+      fullDate: dateString,
+      date: i.toString(),
+      remains,
+      length,
+    });
   }
 
   return (
@@ -170,9 +168,9 @@ const Calendar: React.FC<CalendarProps> = ({ currentDate }) => {
         ))}
       </CalendarDay>
       <CalendarGrid>
-        {calendarDates.map((day) => (
+        {calendarDates.map((day, index) => (
           <TodoDay
-            key={day.date}
+            key={index}
             fullDate={day.fullDate}
             date={day.date}
             remains={day.remains}
