@@ -73,7 +73,7 @@ const Buttons: React.FC = () => {
           >
             카테고리
           </Button>
-          <Button onClick={handleRoutine} variant="text" color="secondary">
+          <Button onClick={handleRoutine} variant="text" color="primary">
             루틴
           </Button>
         </Paper>
