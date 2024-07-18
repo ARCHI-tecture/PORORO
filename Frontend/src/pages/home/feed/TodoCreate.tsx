@@ -31,26 +31,24 @@ const CheckBox = styled.div`
   background: #d9d9d9;
 `;
 
-const InsertForm = styled.form`
+const InsertForm = styled.form<{ color: string }>`
   padding: 0 0 8px 0;
   border-bottom: 2px solid ${(props) => props.color};
   opacity: 0.8;
-  width: 90%; // 정확히 변경 필요
+  width: 90%;
 
   animation-duration: 0.4s;
   animation-name: ${fadeIn};
 `;
 
 const Input = styled.input`
-  padding: 0px;
+  padding: 0;
   width: 100%;
   box-sizing: border-box;
   border: none;
   outline: none;
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;
 
 interface TodoCreateProps {
@@ -59,28 +57,41 @@ interface TodoCreateProps {
   color: string;
 }
 
-function TodoCreate({ newTodo, setNewTodo, color }: TodoCreateProps) {
+const TodoCreate: React.FC<TodoCreateProps> = ({
+  newTodo,
+  setNewTodo,
+  color,
+}) => {
   const [value, setValue] = useState('');
-
-  const addTodo = useTodoListStore((state) => state.addTodo);
+  const { selectedDate, addTodo } = useTodoListStore((state) => ({
+    selectedDate: state.selectedDate,
+    addTodo: state.addTodo,
+  }));
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addTodo({ cateId: newTodo.cateId, text: value });
+    addTodo(selectedDate, newTodo.cateId, value);
     setNewTodo({ selectedDate: '', cateId: 0 });
     setValue('');
   };
+
   return (
     <TodoItemContainer>
       <CheckBox />
       <InsertForm onSubmit={onSubmit} color={color}>
-        <Input autoFocus placeholder="입력" onChange={onChange} value={value} />
+        <Input
+          autoFocus
+          placeholder="할 일을 입력하세요"
+          onChange={onChange}
+          value={value}
+        />
       </InsertForm>
     </TodoItemContainer>
   );
-}
+};
 
 export default React.memo(TodoCreate);

@@ -14,8 +14,10 @@ export interface CalendarProps {
   currentDate: Date;
 }
 
-interface Category {
+export interface Routine {
   id: number;
-  name: string;
-  color: string;
+  index: any;
+  cateId: number;
+  text: string;
+  date: string; // 여기에 date 속성을 추가하세요.
 }
