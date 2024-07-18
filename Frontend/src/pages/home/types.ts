@@ -13,3 +13,9 @@ export interface NewTodo {
 export interface CalendarProps {
   currentDate: Date;
 }
+
+interface Category {
+  id: number;
+  name: string;
+  color: string;
+}

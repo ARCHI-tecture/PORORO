@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import { useTodoListStore } from '../todo';
@@ -12,7 +13,7 @@ const CalendarContainer = styled.div`
   align-items: center;
   padding: 0 12px;
   width: 100%;
-  max-width: 600px; // 최대 너비를 설정하여 화면 크기에 맞게 조정
+  max-width: 600px;
   overflow-x: hidden;
 `;
 
@@ -78,12 +79,14 @@ export interface CalendarDate {
 }
 
 function TodoDay({ fullDate, date, remains, length }: CalendarDate) {
+  const navigate = useNavigate();
   const setDate = useTodoListStore((state) => state.setDate);
   const selectedDate = useTodoListStore((state) => state.selectedDate);
 
   const onDayClick = () => {
     if (fullDate !== '') {
       setDate(fullDate);
+      navigate(`/`);
     }
   };
 
@@ -91,14 +94,19 @@ function TodoDay({ fullDate, date, remains, length }: CalendarDate) {
     <TodoDayContainer>
       {date !== '' && (
         <>
-          <TodoDayCheck $colored={length - remains > 0} onClick={onDayClick}>
+          <TodoDayCheck $colored={length - remains > 0}>
             {remains === 0 && length > 0 ? (
               <FaCheck />
             ) : (
               `${length !== 0 ? remains : ''}`
             )}
           </TodoDayCheck>
-          <TodoDayDate selected={fullDate === selectedDate}>{date}</TodoDayDate>
+          <TodoDayDate
+            selected={fullDate === selectedDate}
+            onClick={onDayClick}
+          >
+            {date}
+          </TodoDayDate>
         </>
       )}
     </TodoDayContainer>
