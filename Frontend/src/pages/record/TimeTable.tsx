@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+
 const TimeTable: React.FC = () => {
   const tableCellStyle = 'w-20 border border-gray-300 min-w-5';
 
@@ -76,38 +77,37 @@ const TimeTable: React.FC = () => {
   useEffect(() => {
     getLastTwoWeeks();
     setTimeTableData(loadTimeTableData());
-    const timetb = [
-      { date: '24-07-11', time: '11:00-11:25' },
-      { date: '24-07-10', time: '12:00-12:25' },
-      { date: '24-07-01', time: '18:00-18:25' },
-      { date: '24-07-02', time: '13:00-13:25' },
-      { date: '24-07-12', time: '11:50-12:15' },
-      { date: '24-07-12', time: '13:00-13:25' },
-    ]; // 임시 데이터
 
-    localStorage.setItem('timeTable', JSON.stringify(timetb));
+    // const timetb = [
+    //   { date: '24-07-11', time: '11:00-11:25' },
+    //   { date: '24-07-10', time: '12:00-12:25' },
+    //   { date: '24-07-01', time: '18:00-18:25' },
+    //   { date: '24-07-02', time: '13:00-13:25' },
+    //   { date: '24-07-12', time: '11:50-12:15' },
+    //   { date: '24-07-12', time: '13:00-13:25' },
+    // ]; // 임시 데이터
   }, []);
 
   const [dates, setDates] = useState([]);
   const [timeTableData, setTimeTableData] = useState(loadTimeTableData());
 
   return (
-    <Grid className="w-full shadow-md pt-5 pl-2 pb-5 mb-5 rounded-md max-w-384">
+    <Grid className="w-full pt-5 pb-5 pl-2 mb-5 rounded-md shadow-md max-w-384">
       <Box className="h-full max-w-320 min-w-160">
-        <Typography className="font-bold text-xl">뽀모도로 기록</Typography>
-        <TableContainer className="w-full md:w-5/6 relative">
+        <Typography className="text-xl font-bold">뽀모도로 기록</Typography>
+        <TableContainer className="relative w-full md:w-5/6">
           <Table>
             <TableBody>
               <TableRow>
                 <TableCell className="border-none"></TableCell>
                 {hourData.map((time: string, index: number) => (
                   <>
-                    <TableCell className="table-cell md:hidden border-none p-0">
+                    <TableCell className="table-cell p-0 border-none md:hidden">
                       <Typography className="text-xs -ml-7">
                         {parseInt(time.split(':')[0]) % 4 === 0 && time}
                       </Typography>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell border-none p-0">
+                    <TableCell className="hidden p-0 border-none md:table-cell">
                       {time}
                     </TableCell>
                   </>
@@ -116,7 +116,7 @@ const TimeTable: React.FC = () => {
               {dates.map((date: string, index) => (
                 <>
                   <TableRow>
-                    <Typography className="border-none whitespace-nowrap text-2xs p-0 pr-1 md:text-base">
+                    <Typography className="p-0 pr-1 border-none whitespace-nowrap text-2xs md:text-base">
                       {date.split('-')[1][0] === '0'
                         ? `${date.split('-')[1]}월 ${date.split('-')[2]}일`
                         : `${date.split('-')[1]}월 ${date.split('-')[2]}일`}
