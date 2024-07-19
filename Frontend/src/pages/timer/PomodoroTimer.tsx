@@ -30,6 +30,8 @@ const PomodoroTimer: React.FC<TimerProps> = ({
   const [isWorkSession, setIsWorkSession] = useState(true);
   // 타이머 종료 여부
   const [timerEnded, setTimerEnded] = useState(false);
+  // 시작 시간 저장
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
@@ -41,6 +43,8 @@ const PomodoroTimer: React.FC<TimerProps> = ({
       // 타이머가 0에 도달했을 때 세션 종료
       setTimerEnded(true);
       setIsActive(false);
+      // 타이머 종료 시 기록 저장
+      saveTimeTable();
     }
   }, [isActive, timeLeft, hasStarted]);
 
@@ -56,6 +60,8 @@ const PomodoroTimer: React.FC<TimerProps> = ({
     setIsActive(true);
     setHasStarted(true);
     setTimerEnded(false);
+    // 시작 시간 저장
+    setStartTime(new Date());
   };
 
   // 타이머 일시 중지 : 활성 상태 토글
@@ -81,6 +87,45 @@ const PomodoroTimer: React.FC<TimerProps> = ({
     setTimerEnded(false);
     setHasStarted(false);
     setIsActive(false);
+  };
+
+  const saveTimeTable = () => {
+    if (startTime) {
+      const endTime = new Date();
+      const startHours = startTime
+        .getHours()
+        .toString()
+        .padStart(2, '0');
+      const startMinutes = startTime
+        .getMinutes()
+        .toString()
+        .padStart(2, '0');
+      const endHours = endTime
+        .getHours()
+        .toString()
+        .padStart(2, '0');
+      const endMinutes = endTime
+        .getMinutes()
+        .toString()
+        .padStart(2, '0');
+      const date = `${startTime.getFullYear()}-${(startTime.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}-${startTime
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
+      const time = `${startHours}:${startMinutes}-${endHours}:${endMinutes}`;
+
+      const newEntry = { date, time };
+      // 기존 기록을 불러와 새로운 기록을 추가
+      const existingEntries = JSON.parse(
+        localStorage.getItem('timeTable') || '[]',
+      );
+      existingEntries.push(newEntry);
+      // 업데이트된 기록을 localStorage에 저장
+      localStorage.setItem('timeTable', JSON.stringify(existingEntries));
+      console.log(localStorage);
+    }
   };
 
   return (
