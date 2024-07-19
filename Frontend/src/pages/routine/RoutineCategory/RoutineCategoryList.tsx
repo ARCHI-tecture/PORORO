@@ -40,7 +40,7 @@ export const RoutineCategoryList: React.FC = () => {
       {localCategory.map((category, categoryIndex) => (
         <div
           key={categoryIndex}
-          className='p-5'>
+          className='p-5 sm:ml-20'>
           <p
             style={{ color: category.color}}
             className='

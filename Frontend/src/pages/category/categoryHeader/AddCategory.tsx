@@ -15,6 +15,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEffect, useRef, useState } from 'react';
 import { CategoryHeaderPropsType } from '../type';
 import { CirclePicker, ColorResult } from 'react-color';
+import uuid from 'react-uuid';
 
 const AddCategory: React.FC<CategoryHeaderPropsType> = ({
   color,
@@ -55,7 +56,7 @@ const AddCategory: React.FC<CategoryHeaderPropsType> = ({
     }
 
     if (categoryArr && category) {
-      const newCategoryArr = [...categoryArr, { category, color }];
+      const newCategoryArr = [...categoryArr, { id: uuid(), category, color }];
       localStorage.setItem('categoryArr', JSON.stringify(newCategoryArr));
       setCategoryArr(newCategoryArr);
       setOpen(false);

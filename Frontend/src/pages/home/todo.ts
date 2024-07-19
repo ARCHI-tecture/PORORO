@@ -18,44 +18,29 @@ type TodoListStore = {
   todoList: TodoListModel[];
   selectedDate: string;
   setDate: (date: string) => void;
-  addTodo: (todo: Omit<TodoItemModel, 'id' | 'done'>) => void;
+  addTodo: (date: string, cateId: number, text: string) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
+  editTodo: (id: string, newText: string) => void;
+  saveTodo: (id: string, newText: string) => void;
 };
 
 export const useTodoListStore = create<TodoListStore>((set) => ({
   todoList: todoData,
   selectedDate: new Date().toLocaleDateString(),
   setDate: (date) => set((state) => ({ ...state, selectedDate: date })),
-  addTodo: (todo) =>
+  addTodo: (date, cateId, text) =>
     set((state) => {
-      const selected = state.todoList.find(
-        (data) => data.date === state.selectedDate,
-      );
-      if (selected) {
-        return {
-          ...state,
-          todoList: state.todoList.map((data) => {
-            if (data.date === state.selectedDate) {
-              return {
-                ...data,
-                todos: [...data.todos, { id: uuid(), done: false, ...todo }],
-              };
-            }
-            return data;
-          }),
-        };
+      const targetData = state.todoList.find((data) => data.date === date);
+      if (targetData) {
+        targetData.todos.push({ id: uuid(), cateId, text, done: false });
+      } else {
+        state.todoList.push({
+          date,
+          todos: [{ id: uuid(), cateId, text, done: false }],
+        });
       }
-      return {
-        ...state,
-        todoList: [
-          ...state.todoList,
-          {
-            date: state.selectedDate,
-            todos: [{ id: uuid(), done: false, ...todo }],
-          },
-        ],
-      };
+      return { ...state };
     }),
   toggleTodo: (id) =>
     set((state) => ({
@@ -80,4 +65,24 @@ export const useTodoListStore = create<TodoListStore>((set) => ({
       });
       return { ...state, todoList: updatedTodos };
     }),
+  editTodo: (id, newText) =>
+    set((state) => ({
+      ...state,
+      todoList: state.todoList.map((data) => ({
+        ...data,
+        todos: data.todos.map((todo) =>
+          todo.id === id ? { ...todo, text: newText } : todo,
+        ),
+      })),
+    })),
+  saveTodo: (id, newText) =>
+    set((state) => ({
+      ...state,
+      todoList: state.todoList.map((data) => ({
+        ...data,
+        todos: data.todos.map((todo) =>
+          todo.id === id ? { ...todo, text: newText } : todo,
+        ),
+      })),
+    })),
 }));

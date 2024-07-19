@@ -77,6 +77,7 @@ const TimeTable: React.FC = () => {
   useEffect(() => {
     getLastTwoWeeks();
     setTimeTableData(loadTimeTableData());
+
     // const timetb = [
     //   { date: '24-07-11', time: '11:00-11:25' },
     //   { date: '24-07-10', time: '12:00-12:25' },
@@ -85,8 +86,6 @@ const TimeTable: React.FC = () => {
     //   { date: '24-07-12', time: '11:50-12:15' },
     //   { date: '24-07-12', time: '13:00-13:25' },
     // ]; // 임시 데이터
-
-    // localStorage.setItem('timeTable', JSON.stringify(timetb));
   }, []);
 
   const [dates, setDates] = useState([]);
