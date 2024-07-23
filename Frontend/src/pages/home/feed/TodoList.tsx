@@ -89,26 +89,44 @@ function TodoList() {
     cateId: number | null;
   }>({ id: null, text: '', cateId: null });
 
-  useEffect(() => {
-    //루틴 로컬 스토리지에 dateRange 파싱하는 코드
-    const dateRange = JSON.parse(localStorage.getItem('dateRange') || '[]');
-    const startDate = new Date(dateRange.start);
-    const endDate = new Date(dateRange.end);
+  // useEffect(() => {
+  //   //루틴 로컬 스토리지에 dateRange 파싱하는 코드
+  //   const routineData = JSON.parse(localStorage.getItem('routineData') || '[]');
+  //   // const dateRange = JSON.parse(localStorage.getItem('routineData') || '[]');
+  //   const dateRange =
+  //     routineData.find((item: any) => item.dateRange)?.dateRange || [];
 
-    routineList.forEach((routine: Routine) => {
-      const routineDate = new Date(selectedDate);
-      if (routineDate >= startDate && routineDate <= endDate) {
-        if (
-          targetData &&
-          !targetData.todos.some((todo) => todo.cateId === routine.id)
-        ) {
-          useTodoListStore
-            .getState()
-            .addTodo(selectedDate, routine.id, routine.text);
-        }
-      }
+  //   const startDate = new Date(dateRange[0].dateRange[0].split('T'));
+  //   const endDate = new Date(dateRange[1].dateRange[1].split['T']);
+  //   console.log(dateRange[0].split('T')[0]);
+
+  // routineList.forEach((routine: Routine) => {
+  //   const routineDate = new Date(selectedDate);
+  //   if (routineDate >= startDate && routineDate <= endDate) {
+  //     if (
+  //       targetData &&
+  //       !targetData.todos.some((todo) => todo.cateId === routine.id)
+  //     ) {
+  //       useTodoListStore
+  //         .getState()
+  //         .addTodo(selectedDate, routine.id, routine.text);
+  //     }
+  //   }
+  // });
+  // }, []);
+
+  const filteredRoutines = filterRoutinesByDate(routineList, selectedDate);
+  function filterRoutinesByDate(
+    routineList: { filter: any },
+    selectedDate: string,
+  ) {
+    return routineList.filter((routine: Routine) => {
+      const startDate = new Date(routine.dateRange[0]);
+      const endDate = new Date(routine.dateRange[1]);
+      const selectedDateObj = new Date(selectedDate);
+      return selectedDateObj >= startDate && selectedDateObj <= endDate;
     });
-  }, [selectedDate, routineList, targetData]);
+  }
 
   const addTodo = (date: string, cateId: number) => {
     setNewTodo({ selectedDate: date, cateId });
@@ -141,6 +159,25 @@ function TodoList() {
             title={category.category}
             color={category.color}
           />
+          {filteredRoutines.map(
+            (routine: Routine, index: number) =>
+              categoryList.indexOf(category) === routine.id && (
+                <TodoItem
+                  key={routine.id}
+                  id={routine.id.toString()}
+                  text={routine.routineName}
+                  done={false}
+                  color={category.color}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  editingId={editingData.id}
+                  editingText={editingData.text}
+                  onSave={handleSave}
+                  onChange={handleChange}
+                  cateId={category.id}
+                />
+              ),
+          )}
           {targetData &&
             targetData.todos
               .filter((todo) => todo.cateId === category.id)
@@ -168,9 +205,6 @@ function TodoList() {
                 color={category.color}
               />
             )}
-          {/* {routineList.map((routine: any) => {
-            console.log(routine);
-          })} */}
         </React.Fragment>
       ))}
     </TodoListContainer>

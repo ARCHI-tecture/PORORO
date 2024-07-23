@@ -15,9 +15,13 @@ export interface CalendarProps {
 }
 
 export interface Routine {
+  routineName: string;
+  dateRange: any;
   id: number;
   index: any;
   cateId: number;
   text: string;
-  date: string; // 여기에 date 속성을 추가하세요.
+
+  date: [string, string]; // 여기에 date 속성을 추가하세요.
+  // date: string; // 여기에 date 속성을 추가하세요.
 }
