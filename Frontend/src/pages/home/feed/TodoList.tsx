@@ -68,6 +68,12 @@ function TodoList() {
   const todoList = useTodoListStore((state) => state.todoList);
   const selectedDate = useTodoListStore((state) => state.selectedDate);
   const targetData = todoList.find((data) => data.date === selectedDate);
+  // const targetData = todoList.find(
+  //   (data) =>
+  //     `${data.date.split('.')[1].trim()}/${data.date.split('.')[2].trim()}/${
+  //       data.date.split('.')[0]
+  //     }` === selectedDate,
+  // );
 
   //카테고리 로컬스토리지 불러오는 코드
   const categoryListStr = localStorage.getItem('categoryArr');
@@ -82,6 +88,32 @@ function TodoList() {
     text: string;
     cateId: number | null;
   }>({ id: null, text: '', cateId: null });
+
+  // useEffect(() => {
+  //   //루틴 로컬 스토리지에 dateRange 파싱하는 코드
+  //   const routineData = JSON.parse(localStorage.getItem('routineData') || '[]');
+  //   // const dateRange = JSON.parse(localStorage.getItem('routineData') || '[]');
+  //   const dateRange =
+  //     routineData.find((item: any) => item.dateRange)?.dateRange || [];
+
+  //   const startDate = new Date(dateRange[0].dateRange[0].split('T'));
+  //   const endDate = new Date(dateRange[1].dateRange[1].split['T']);
+  //   console.log(dateRange[0].split('T')[0]);
+
+  // routineList.forEach((routine: Routine) => {
+  //   const routineDate = new Date(selectedDate);
+  //   if (routineDate >= startDate && routineDate <= endDate) {
+  //     if (
+  //       targetData &&
+  //       !targetData.todos.some((todo) => todo.cateId === routine.id)
+  //     ) {
+  //       useTodoListStore
+  //         .getState()
+  //         .addTodo(selectedDate, routine.id, routine.text);
+  //     }
+  //   }
+  // });
+  // }, []);
 
   const filteredRoutines = filterRoutinesByDate(routineList, selectedDate);
   function filterRoutinesByDate(

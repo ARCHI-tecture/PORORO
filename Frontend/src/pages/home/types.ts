@@ -21,5 +21,7 @@ export interface Routine {
   index: any;
   cateId: number;
   text: string;
+
   date: [string, string]; // 여기에 date 속성을 추가하세요.
+  // date: string; // 여기에 date 속성을 추가하세요.
 }
