@@ -86,13 +86,24 @@ src
 
 #### 1. (문제) 여기 작성
 
+
+[손예림]
 #### - 원인
 
-여기 작성
+카테고리 색상을 추가할 때 사용하는 CirclePicker 컴포넌트가 브라우저 사이즈 변경 시 색상 선택 버튼 밑에 붙어서 자연스럽게 이동하지 않고, 브라우저 사이징이 완료된 후 약 3초 후에 이동하는 현상이 발생했습니다. 브라우저 크기 변경 시 컴포넌트의 위치가 실시간으로 업데이트되지 않아 발생한 문제로 판단되었습니다. CSS의 position: absolute나 position: fixed 속성 등을 사용하여 위치를 조정하려 했으나, 이는 문제를 해결하지 못했습니다.
 
 #### - 해결
 
-여기 작성
+버퍼링 현상 없이 자연스럽게 이동시키는 것이 어려웠기 때문에, 화면 사이즈가 조정되면 아예 창을 닫는 방법을 선택했습니다. 이를 위해 useEffect 훅을 사용하여 window 객체에 resize 이벤트를 추가하고, 브라우저 사이즈가 변경될 때 CirclePicker 창이 꺼지도록 구현했습니다.
+
+```tsx
+const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setAnchorEl(null);
+    });
+  }, []);
+
 
 ## 8. 개발 후기
 
