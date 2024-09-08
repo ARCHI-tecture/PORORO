@@ -124,7 +124,7 @@ const handleSave = () => {
 
 useTodoLostStore함수를 이용하여 addTodo를 매칭 해주는 방법으로 변경하니 오류가 해결되었습니다.
 
-[손예림]
+### [손예림]
 
 #### - 원인
 
