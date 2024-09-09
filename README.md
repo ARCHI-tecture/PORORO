@@ -17,16 +17,22 @@
 - 날짜별 투두리스트 조회
 - 날짜별 투두리스트 갯수 출력
 
+![홈 화면](https://github.com/user-attachments/assets/3e033e0d-0989-47b4-b9fd-3cf337a113a0)
+
 ### [카테고리]
 
-- 카테고리 색상 추가
-- 카테고리 색상 수정/삭제
+- 카테고리 추가 / 수정 / 삭제
+- 카테고리 색상 수정
+
+![카테고리 화면](https://github.com/user-attachments/assets/d1b8dd4a-6f4a-4f9a-915b-3c23dfde35a5)
 
 ### [루틴]
 
 - 카테고리별 루틴 출력
 - 루틴 (제목, 기간, 주기) 생성
 - 루틴 제목 수정 및 삭제
+
+![루틴 화면](https://github.com/user-attachments/assets/77b4e319-b68c-41bf-b603-d45c4d8e0fa5)
 
 ### [뽀모도로 타이머]
 
@@ -35,10 +41,14 @@
 - 타이머 배경화면 커스텀
 - 완료 시 타이머 기록 저장
 
+![타이머 화면](https://github.com/user-attachments/assets/6c0bca56-de8c-42cb-b73a-5dbf04585fad)
+
 ### [통계 기록]
 
 - 뽀모도로 타이머 기록 타임테이블 출력
 - 기록 평균시간, 하루 총 시간, 총 시간 출력
+
+![통계 기록 화면](https://github.com/user-attachments/assets/8f395fdf-ad61-4b6b-9391-e6880af85415)
 
 ## 3. 개발 환경
 
